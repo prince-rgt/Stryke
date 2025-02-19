@@ -1,0 +1,19 @@
+{
+  "Sidebar": {
+    "Dashboard": "Tablero",
+    "Trade": "Comercio",
+    "Portfolio": "Cartera"
+  },
+  "Header": {
+    "BadgeText": "¡STRYKE ESTÁ EN VIVO! LEER EL BLOG DE ANUNCIOS"
+  },
+  "Dashboard": {
+    "Pair": "Par",
+    "AvailableLiquidity": "Liquidez Disponible",
+    "TotalLiquidity": "Liquidez Total",
+    "OpenInterest": "Interés Abierto",
+    "24hVolume": "Volumen 24h",
+    "Utilization": "Utilización",
+    "TotalEarnings": "Ganancias Totales"
+  }
+}

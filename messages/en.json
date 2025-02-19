@@ -1,0 +1,93 @@
+{
+  "Sidebar": {
+    "Dashboard": "Dashboard",
+    "Trade": "Trade",
+    "Portfolio": "Portfolio",
+    "Migrate": "Migrate DPX/rDPX",
+    "xSyk": "xSYK",
+    "Staking": "Stake xSYK",
+    "Gauges": "Gauges",
+    "Leaderboard": "Leaderboard"
+  },
+  "Header": {
+    "WrongNetwork": "Wrong Network",
+    "BadgeText": "THIS IS A STATUS BADGE",
+    "BadgeTextKodiak": "$HONEY trading is now live on Mainnet! READ THE ANNOUNCEMENT BLOG",
+    "BadgeTextPancake": "Need help understanding how to use CLAMM?",
+    "ConnectWallet": "Connect Wallet"
+  },
+  "Dashboard": {
+    "Pair": "Pair",
+    "AvailableLiquidity": "Available Liquidity",
+    "TotalLiquidity": "Total Liquidity",
+    "OpenInterest": "Open Interest",
+    "24hVolume": "24h Volume",
+    "Utilization": "Utilization",
+    "TotalEarnings": "Total Earnings",
+    "EarningsApr": "Earnings APR",
+    "PnlDeltaChart": {
+      "WalletNotConnected": {
+        "Heading": "Connect wallet to see PNL"
+      },
+      "FetchFail": {
+        "Heading": "Fail to fetch historical PNL"
+      },
+      "NoData": {
+        "Heading": "Your PNL performance will appear here"
+      }
+    },
+    "Network": "Network"
+  },
+  "xSYK": {
+    "Banner": {
+      "Heading": {
+        "Text": "Get",
+        "Emphasized": "xSYK."
+      },
+      "Body": "Participate in the xSYK ecosystem. Start by converting SYK, redeem your xSYK and manage your xSYK plugins allocations."
+    },
+    "Convert": {
+      "Heading": "Get xSYK",
+      "Body": "Convert your SYK to xSYK to unlock bonus rewards via staking & more."
+    },
+    "Redeem": {
+      "Heading": "Redeem SYK",
+      "Body": "Redeem your SYK from xSYK over a cliff vesting period of 7 days (1 -> 0.5 ratio) or ~6 months (1 -> 1 ratio).",
+      "CancelDialog": {
+        "Title": "Cancel Redeem",
+        "Body": "By opting to cancel this active redemption, you will restart the entire process. You will retrieve your {xSykAmount} xSYK, but you will not get any SYK.",
+        "Close": "Close"
+      }
+    },
+    "Plugins": {
+      "Staking": {
+        "Heading": "Stake your xSYK",
+        "Body": "Stake your xSYK to earn rewards. Real yield through trading fees.",
+        "ctaLabel": "Stake"
+      },
+      "Voting": {
+        "Heading": "Vote using xSYK",
+        "Body": "Vote on gauges using xSYK. To ensure more rewards are distributed to the gauges you support.",
+        "ctaLabel": "Vote"
+      }
+    },
+    "EmptyTables": {
+      "Vests": "Your vested xSYK positions will appear here."
+    },
+    "Staking": {
+      "Banner": {
+        "Heading": {
+          "Text": "Stake",
+          "Emphasized": "xSYK."
+        },
+        "Body": "Stake your xSYK to earn rewards. To learn more about xSYK, check out our quick links."
+      },
+      "Earnings": "Earnings",
+      "EpochData": "Epoch Data",
+      "Summary": {
+        "Staked": "Staked",
+        "Share": "Share"
+      }
+    }
+  }
+}

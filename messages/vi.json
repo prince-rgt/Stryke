@@ -1,0 +1,19 @@
+{
+  "Sidebar": {
+    "Dashboard": "Bảng Điều Khiển",
+    "Trade": "Giao Dịch",
+    "Portfolio": "Danh Mục Đầu Tư"
+  },
+  "Header": {
+    "BadgeText": "STRYKE ĐANG HOẠT ĐỘNG! ĐỌC BLOG THÔNG BÁO"
+  },
+  "Dashboard": {
+    "Pair": "Cặp",
+    "AvailableLiquidity": "Thanh Khoản Khả Dụng",
+    "TotalLiquidity": "Tổng Thanh Khoản",
+    "OpenInterest": "Lãi Suất Mở",
+    "24hVolume": "Khối Lượng 24h",
+    "Utilization": "Sử Dụng",
+    "TotalEarnings": "Tổng Thu Nhập"
+  }
+}

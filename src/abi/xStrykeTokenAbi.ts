@@ -1,0 +1,786 @@
+const xStrykeTokenAbi = [
+  { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
+  {
+    type: 'function',
+    name: 'MAX_FIXED_RATIO',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'UPGRADE_INTERFACE_VERSION',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'allowance',
+    inputs: [
+      { name: 'owner', type: 'address', internalType: 'address' },
+      { name: 'spender', type: 'address', internalType: 'address' },
+    ],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'approve',
+    inputs: [
+      { name: 'spender', type: 'address', internalType: 'address' },
+      { name: 'value', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'authority',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'balanceOf',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'cancelVest',
+    inputs: [{ name: '_vestIndex', type: 'uint256', internalType: 'uint256' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'convert',
+    inputs: [
+      { name: '_amount', type: 'uint256', internalType: 'uint256' },
+      { name: '_to', type: 'address', internalType: 'address' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'decimals',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint8', internalType: 'uint8' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'excessReceiver',
+    inputs: [],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getSykByVestingDuration',
+    inputs: [
+      { name: '_xSykAmount', type: 'uint256', internalType: 'uint256' },
+      { name: '_duration', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'initialize',
+    inputs: [
+      { name: '_syk', type: 'address', internalType: 'address' },
+      {
+        name: '_initialAuthority',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'isConsumingScheduledOp',
+    inputs: [],
+    outputs: [{ name: '', type: 'bytes4', internalType: 'bytes4' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isContract',
+    inputs: [{ name: 'addr', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'name',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'paused',
+    inputs: [],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'proxiableUUID',
+    inputs: [],
+    outputs: [{ name: '', type: 'bytes32', internalType: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'redeem',
+    inputs: [{ name: '_vestIndex', type: 'uint256', internalType: 'uint256' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'redeemSettings',
+    inputs: [],
+    outputs: [
+      { name: 'minRatio', type: 'uint256', internalType: 'uint256' },
+      { name: 'maxRatio', type: 'uint256', internalType: 'uint256' },
+      { name: 'minDuration', type: 'uint256', internalType: 'uint256' },
+      { name: 'maxDuration', type: 'uint256', internalType: 'uint256' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'setAuthority',
+    inputs: [{ name: 'newAuthority', type: 'address', internalType: 'address' }],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'syk',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract IStrykeTokenBase',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'symbol',
+    inputs: [],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'totalSupply',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'transfer',
+    inputs: [
+      { name: 'to', type: 'address', internalType: 'address' },
+      { name: 'value', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'transferFrom',
+    inputs: [
+      { name: 'from', type: 'address', internalType: 'address' },
+      { name: 'to', type: 'address', internalType: 'address' },
+      { name: 'value', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'updateContractWhitelist',
+    inputs: [
+      { name: '_contract', type: 'address', internalType: 'address' },
+      { name: '_add', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'updateExcessReceiver',
+    inputs: [
+      {
+        name: '_excessReceiver',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'updateRedeemSettings',
+    inputs: [
+      {
+        name: '_redeemSettings',
+        type: 'tuple',
+        internalType: 'struct RedeemSettings',
+        components: [
+          {
+            name: 'minRatio',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'maxRatio',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'minDuration',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'maxDuration',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'updateWhitelist',
+    inputs: [
+      { name: '_account', type: 'address', internalType: 'address' },
+      { name: '_whitelisted', type: 'bool', internalType: 'bool' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'upgradeToAndCall',
+    inputs: [
+      {
+        name: 'newImplementation',
+        type: 'address',
+        internalType: 'address',
+      },
+      { name: 'data', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'vest',
+    inputs: [
+      { name: '_amount', type: 'uint256', internalType: 'uint256' },
+      { name: '_duration', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'vestIndex',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'vests',
+    inputs: [{ name: '', type: 'uint256', internalType: 'uint256' }],
+    outputs: [
+      { name: 'account', type: 'address', internalType: 'address' },
+      { name: 'sykAmount', type: 'uint256', internalType: 'uint256' },
+      { name: 'xSykAmount', type: 'uint256', internalType: 'uint256' },
+      { name: 'maturity', type: 'uint256', internalType: 'uint256' },
+      { name: 'status', type: 'uint8', internalType: 'enum VestStatus' },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'whitelist',
+    inputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'whitelistedContracts',
+    inputs: [{ name: '', type: 'address', internalType: 'address' }],
+    outputs: [{ name: '', type: 'bool', internalType: 'bool' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'Approval',
+    inputs: [
+      {
+        name: 'owner',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'spender',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'value',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'AuthorityUpdated',
+    inputs: [
+      {
+        name: 'authority',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ContractWhitelistUpdated',
+    inputs: [
+      {
+        name: '_contract',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: '_add',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Converted',
+    inputs: [
+      {
+        name: 'from',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'to',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'ExcessReceiverUpdated',
+    inputs: [
+      {
+        name: 'excessReceiver',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Initialized',
+    inputs: [
+      {
+        name: 'version',
+        type: 'uint64',
+        indexed: false,
+        internalType: 'uint64',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Paused',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RedeemSettingsUpdated',
+    inputs: [
+      {
+        name: 'redeemSettings',
+        type: 'tuple',
+        indexed: false,
+        internalType: 'struct RedeemSettings',
+        components: [
+          {
+            name: 'minRatio',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'maxRatio',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'minDuration',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'maxDuration',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Redeemed',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'xSykAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'sykAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Transfer',
+    inputs: [
+      {
+        name: 'from',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'to',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'value',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Unpaused',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Upgraded',
+    inputs: [
+      {
+        name: 'implementation',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'VestCancelled',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'vestIndex',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'xSykAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'Vested',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'xSykAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'sykAmount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'duration',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'vestIndex',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'WhitelistUpdated',
+    inputs: [
+      {
+        name: 'account',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'add',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'AccessManagedInvalidAuthority',
+    inputs: [{ name: 'authority', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'AccessManagedRequiredDelay',
+    inputs: [
+      { name: 'caller', type: 'address', internalType: 'address' },
+      { name: 'delay', type: 'uint32', internalType: 'uint32' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'AccessManagedUnauthorized',
+    inputs: [{ name: 'caller', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'AddressEmptyCode',
+    inputs: [{ name: 'target', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'AddressInsufficientBalance',
+    inputs: [{ name: 'account', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'ContractWhitelist_AddressNotContract',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ContractWhitelist_NotWhitelisted',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ERC1967InvalidImplementation',
+    inputs: [
+      {
+        name: 'implementation',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+  },
+  { type: 'error', name: 'ERC1967NonPayable', inputs: [] },
+  {
+    type: 'error',
+    name: 'ERC20InsufficientAllowance',
+    inputs: [
+      { name: 'spender', type: 'address', internalType: 'address' },
+      { name: 'allowance', type: 'uint256', internalType: 'uint256' },
+      { name: 'needed', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ERC20InsufficientBalance',
+    inputs: [
+      { name: 'sender', type: 'address', internalType: 'address' },
+      { name: 'balance', type: 'uint256', internalType: 'uint256' },
+      { name: 'needed', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  {
+    type: 'error',
+    name: 'ERC20InvalidApprover',
+    inputs: [{ name: 'approver', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'ERC20InvalidReceiver',
+    inputs: [{ name: 'receiver', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'ERC20InvalidSender',
+    inputs: [{ name: 'sender', type: 'address', internalType: 'address' }],
+  },
+  {
+    type: 'error',
+    name: 'ERC20InvalidSpender',
+    inputs: [{ name: 'spender', type: 'address', internalType: 'address' }],
+  },
+  { type: 'error', name: 'EnforcedPause', inputs: [] },
+  { type: 'error', name: 'ExpectedPause', inputs: [] },
+  { type: 'error', name: 'FailedInnerCall', inputs: [] },
+  { type: 'error', name: 'InvalidInitialization', inputs: [] },
+  { type: 'error', name: 'NotInitializing', inputs: [] },
+  { type: 'error', name: 'ReentrancyGuardReentrantCall', inputs: [] },
+  {
+    type: 'error',
+    name: 'SafeERC20FailedOperation',
+    inputs: [{ name: 'token', type: 'address', internalType: 'address' }],
+  },
+  { type: 'error', name: 'UUPSUnauthorizedCallContext', inputs: [] },
+  {
+    type: 'error',
+    name: 'UUPSUnsupportedProxiableUUID',
+    inputs: [{ name: 'slot', type: 'bytes32', internalType: 'bytes32' }],
+  },
+  { type: 'error', name: 'XStrykeToken_AmountZero', inputs: [] },
+  { type: 'error', name: 'XStrykeToken_DurationTooLow', inputs: [] },
+  {
+    type: 'error',
+    name: 'XStrykeToken_InvalidWhitelistAddress',
+    inputs: [],
+  },
+  { type: 'error', name: 'XStrykeToken_SenderNotOwner', inputs: [] },
+  {
+    type: 'error',
+    name: 'XStrykeToken_TransferNotAllowed',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'XStrykeToken_VestingHasNotMatured',
+    inputs: [],
+  },
+  { type: 'error', name: 'XStrykeToken_VestingNotActive', inputs: [] },
+  {
+    type: 'error',
+    name: 'XStrykeToken_WrongDurationValues',
+    inputs: [],
+  },
+  { type: 'error', name: 'XStrykeToken_WrongRatioValues', inputs: [] },
+] as const;
+
+export default xStrykeTokenAbi;

@@ -1,0 +1,19 @@
+{
+  "Sidebar": {
+    "Dashboard": "Dashboard",
+    "Trade": "Handel",
+    "Portfolio": "Portfolio"
+  },
+  "Header": {
+    "BadgeText": "STRYKE IST LIVE! LESEN SIE DEN ANKÜNDIGUNGSBLOG"
+  },
+  "Dashboard": {
+    "Pair": "Paar",
+    "AvailableLiquidity": "Verfügbare Liquidität",
+    "TotalLiquidity": "Gesamtliquidität",
+    "OpenInterest": "Offenes Interesse",
+    "24hVolume": "24h Volumen",
+    "Utilization": "Auslastung",
+    "TotalEarnings": "Gesamteinnahmen"
+  }
+}

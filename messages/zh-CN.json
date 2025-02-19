@@ -1,0 +1,19 @@
+{
+  "Sidebar": {
+    "Dashboard": "仪表板",
+    "Trade": "交易",
+    "Portfolio": "投资组合"
+  },
+  "Header": {
+    "BadgeText": "STRYKE 已上线！阅读公告博客"
+  },
+  "Dashboard": {
+    "Pair": "对",
+    "AvailableLiquidity": "可用流动性",
+    "TotalLiquidity": "总流动性",
+    "OpenInterest": "未平仓合约",
+    "24hVolume": "24小时成交量",
+    "Utilization": "利用率",
+    "TotalEarnings": "总收益"
+  }
+}
