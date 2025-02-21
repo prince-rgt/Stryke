@@ -34,7 +34,7 @@ const Vaults: React.FC = () => {
                         <Typography as="h1" variant="h4-bold"> WBTC Superbull </Typography>
                     </div>
                     <Typography as="p" variant="p-medium" className="text-muted-foreground">
-                        The BTC Superbull Monthly Vault combines Yearn yields with DWF Labs' CEX trading in monthly epochs. 
+                        The BTC Superbull Monthly Vault combines Yearn yields with DWF Labs&apos; CEX trading in monthly epochs. 
                         WBTC deposits earn Yearn APY when idle, while DWF can borrow funds for market making, returning profits at epoch end.
                     </Typography>
                 </div>
