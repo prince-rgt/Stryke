@@ -48,8 +48,8 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <div suppressHydrationWarning className="flex h-screen w-screen bg-background lg:overflow-hidden">
-      <div ref={sidebarRef}>
+    <div suppressHydrationWarning className="flex h-screen w-screen bg-[#141414] lg:overflow-hidden">
+      <div className='border-r-2 border-black' ref={sidebarRef}>
         <Sidebar />
       </div>
       <div className="flex max-h-screen flex-grow flex-col" style={{ maxWidth: `calc(100% - ${sidebarWidth}px)` }}>
