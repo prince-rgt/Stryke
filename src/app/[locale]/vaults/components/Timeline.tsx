@@ -10,7 +10,7 @@ const Timeline = () => {
       <div className="bg-secondary p-2">
         <div className="flex justify-between uppercase font-mono text-xs text-muted-foreground">
           <span>Previous</span>
-          <span className="text-white">Current</span>
+          <span className="text-white ml-5">Current</span>
           <span className="underline">Deposit Open</span>
         </div>
         <div className="flex justify-between uppercase my-1.5 items-center">
