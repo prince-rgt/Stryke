@@ -69,7 +69,7 @@ const HeaderDesktop = () => {
   const { triggerTradeOnboardingFlow } = useGlobalUiStore();
 
   return (
-    <div className="z-20 flex items-center justify-between bg-primary px-md py-[6px]">
+    <div className="z-20 flex items-center justify-between bg-primary px-md py-[6px] border-b-2 border-black">
       {SHOW_BRANDING_IN_HEADER ? (
         <Link href={LANDING_PAGE} target="_self" rel="noopener noreferrer" className="flex">
           <Logo /> <TextLogo />

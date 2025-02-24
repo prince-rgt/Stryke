@@ -347,7 +347,7 @@ const RecapPage: React.FC = () => {
     if (slides[currentSlide]?.showConfetti) {
       triggerConfetti();
     }
-  }, [currentSlide]);
+  }, [currentSlide, slides]);
 
   if (!address) {
     return (
