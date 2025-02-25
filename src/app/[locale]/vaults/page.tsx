@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/typography';
 import Panel from './components/Panel';
 import Performance from './components/Performance';
+import Positions from './components/Positions';
+import SideNav from './components/sidenav';
 import Timeline from './components/Timeline';
 
 import { OPEN_GRAPH_BASE_DATA } from '@/consts/metadata';
@@ -100,9 +102,13 @@ const Vaults: React.FC = () => {
         {/* Positions */}
         <div className="my-4">
           <h1 className="font-semibold text-sm">Your Positions</h1>
+          <Positions />
         </div>
       </div>
-      <div className="flex flex-col h-full w-1/3 bg-[#202020] p-3 text-muted-foreground text-center">- SideNav -</div>
+
+      <div className="h-full w-1/3 ">
+        <SideNav />
+      </div>
     </div>
   );
 };
