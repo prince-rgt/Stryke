@@ -1,5 +1,5 @@
 interface ButtonV1Propos {
-  classes: string;
+  classes?: string;
   label: string;
 }
 
