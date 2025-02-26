@@ -12,7 +12,7 @@ import Timeline from './components/Timeline';
 
 import { OPEN_GRAPH_BASE_DATA } from '@/consts/metadata';
 
-import { Arbitrum, BTC } from '../../../assets/images';
+import { Arbitrum, BTC } from '../../../../assets/images';
 
 export const metadata: Metadata = {
   title: 'Vaults | Stryke',

@@ -101,19 +101,19 @@ const DepositForm = () => {
   }, [data, amount, xsyk, xsykStaking, chainId, user]);
 
   return (
-    <div className="justify-between p-sm h-full">
+    <div className="justify-between p-3 h-full">
       {/* Form */}
       <div className="bg-[#2C2C2C] p-4 mb-20">
-        <div className="flex justify-between items-center">
-          <div className="text-left">
+        <div className="flex justify-between items-center w-full">
+          <div className="text-left w-2/3">
             <p>Deposit</p>
             <input
               type="number"
               placeholder="0.00"
-              className="bg-transparent text-2xl placeholder:text-muted-foreground text-white font-medium max-w-32"
+              className="bg-transparent text-2xl placeholder:text-muted-foreground text-white font-medium w-full"
             />
           </div>
-          <div className="flex items-center justify-center gap-1 bg-[#3C3C3C] rounded px-3 h-9 text-sm text-white">
+          <div className="flex items-center justify-center gap-1 bg-[#3C3C3C] rounded px-1.5 h-9 text-sm text-white ml-2">
             <Image src={BTC} alt="" className="size-6" />
             <span>WBTC</span>
           </div>
