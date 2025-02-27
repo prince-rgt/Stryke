@@ -42,7 +42,9 @@ const Info = () => {
           </div>
           <CollapsibleContent className="mt-md flex-grow data-[state=open]:h-fit">
             <div className="flex bg-secondary p-md">
-              <div className="border border-background">{/* <InfoChart /> */}</div>
+              <div className="border border-background">
+                <InfoChart />
+              </div>
               <div className="ml-2 flex flex-col justify-between">
                 <>
                   <Typography variant="small-medium" className="mb-md text-muted-foreground">

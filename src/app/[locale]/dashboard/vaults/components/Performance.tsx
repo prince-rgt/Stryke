@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import { Yearn } from '@/assets/images';
 
+import PerformanceChart from './Chart';
 import Panel from './Panel';
 
 const Performance = () => {
@@ -45,7 +46,9 @@ const Performance = () => {
 
       {/* Chart */}
       <div className="w-1/2 text-xs p-3">
-        <div className="border-2 border-black flex justify-center items-center h-full">- Chart -</div>
+        <div className="border-2 border-black flex justify-center items-center h-full">
+          <PerformanceChart />
+        </div>
       </div>
     </div>
   );
