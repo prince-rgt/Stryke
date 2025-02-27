@@ -1,4 +1,5 @@
 import { ButtonV1 } from './Buttons';
+import Tooltip from './Tooltip';
 
 const Positions = () => {
   const dummyData = [
@@ -42,10 +43,24 @@ const Positions = () => {
                 )}
               </td>
               <td>
-                <span
-                  className={`underline ${true ? 'text-[#16EF94] decoration-[#16EF94]' : 'text-red-500 decoration-red-500'}`}>
-                  {true ? '+' : '-'} {data.pnl}%
-                </span>
+                <Tooltip
+                  content={
+                    <div className="flex flex-col gap-2 w-[9.6rem]">
+                      <p className="flex justify-between">
+                        <span className="text-muted-foreground">WBTC</span>
+                        <span className="font-mono">{0.0031}</span>
+                      </p>
+                      <p className="flex justify-between gap-4">
+                        <span className="text-muted-foreground">USD</span>
+                        <span className="font-mono">${130.13}</span>
+                      </p>
+                    </div>
+                  }>
+                  <span
+                    className={`underline ${true ? 'text-[#16EF94] decoration-[#16EF94]' : 'text-red-500 decoration-red-500'}`}>
+                    {true ? '+' : '-'} {data.pnl}%
+                  </span>
+                </Tooltip>
               </td>
               <td>
                 <span
