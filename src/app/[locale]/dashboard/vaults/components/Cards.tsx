@@ -42,7 +42,7 @@ const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentage
       {/* Card Body - Buttons */}
       <div className="flex gap-4 font-mono text-sm flex-wrap">{children}</div>
 
-      <p className="font-mono my-4">{percentages}</p>
+      <p className="font-mono my-4 text-sm">{percentages}</p>
 
       <button
         onClick={handleDeposit}
