@@ -72,7 +72,6 @@ const Slider = () => {
                 type="text"
                 placeholder={slides[currentSlide].placeholder}
                 className="w-full bg-transparent border-0 px-[5px] text-white"
-                readOnly
               />
             </div>
             <p
