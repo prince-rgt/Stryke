@@ -52,8 +52,8 @@ const Slider = () => {
     <div className="flex gap-2 items-center my-2">
       {/* Left Arrow */}
       <ChevronLeft
-        size={18}
-        className="mr-3 opacity-50 cursor-pointer hover:opacity-100 transition"
+        size={34}
+        className="mr-3 p-2 opacity-50 cursor-pointer hover:opacity-100 transition"
         onClick={prevSlide}
       />
 
@@ -85,8 +85,8 @@ const Slider = () => {
 
       {/* Right Arrow */}
       <ChevronRight
-        size={18}
-        className="ml-3 opacity-50 cursor-pointer hover:opacity-100 transition"
+        size={34}
+        className="ml-3 p-2 opacity-50 cursor-pointer hover:opacity-100 transition"
         onClick={nextSlide}
       />
     </div>
