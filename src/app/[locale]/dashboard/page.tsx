@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
         {/* Cards */}
         <div className="flex my-2 flex-wrap">
           <CardItem
-            header="BTC Superball Monthly"
+            header="BTC Superbull Monthly"
             imgSrc={BTC}
             percentages={
               <span>
@@ -90,7 +90,7 @@ const Dashboard: React.FC = () => {
           </CardItem>
 
           <CardItem
-            header="ETH Superball Quarterly"
+            header="ETH Superbull Quarterly"
             imgSrc={ETH}
             hasdollar={true}
             percentages={
@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
           </CardItem>
 
           <CardItem
-            header="BTC Superball Monthly"
+            header="ETH Superbull Monthly"
             imgSrc={ETH}
             hasdollar={true}
             percentages={

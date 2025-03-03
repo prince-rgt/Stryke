@@ -4,6 +4,8 @@ import Image from 'next/image';
 
 import { Input } from '@/components/ui/input';
 import { Typography } from '@/components/ui/typography';
+import BackButton from './components/BackButton';
+import Slider from './components/EpochSlider';
 import Panel from './components/Panel';
 import Performance from './components/Performance';
 import Positions from './components/Positions';
@@ -31,11 +33,9 @@ const Vaults: React.FC = () => {
         {/* Header */}
         <div className="w-full flex flex-col gap-md mb-2">
           <div className="flex gap-2 !items-center my-2">
-            <span>
-              <ChevronLeft size={18} className="opacity-50 text-xl mr-4" />
-            </span>
-            <Image src={BTC} alt="Bitcoin" className="w-8 h-8 mt-1" />
-            <Typography as="h1" variant="h4-bold">
+            <BackButton />
+            <Image src={BTC} alt="Bitcoin" className="w-8 h-8 mt-2" />
+            <Typography as="h1" variant="h4-bold" className="mt-1">
               {' '}
               WBTC Superbull{' '}
             </Typography>
@@ -48,16 +48,7 @@ const Vaults: React.FC = () => {
         </div>
 
         {/* Epoch */}
-        <div className="flex gap-2 items-center my-2">
-          <ChevronLeft size={18} className="mr-4 opacity-50" />
-          <div className="bg-[#3C3C3C] w-[8.75rem] rounded">
-            <Input type="number" placeholder="Epoch 2" className="w-full bg-transparent border-0 px-[5px]" />
-          </div>
-          <button className="px-2 bg-secondary font-medium text-[#EBFF00] font-mono h-full text-sm rounded flex items-center">
-            <span>LIVE</span>
-          </button>
-          <ChevronRight size={18} className="ml-4 opacity-50" />
-        </div>
+        <Slider />
 
         {/* panes */}
         <div className="grid grid-cols-2 divide-x divide-background border border-background bg-secondary my-2">
