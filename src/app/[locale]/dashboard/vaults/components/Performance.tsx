@@ -10,7 +10,7 @@ const Performance = () => {
     <div className="w-full flex bg-secondary">
       <div className="w-1/2 border-r-2 border-black grid-row-1 grid divide-y divide-background">
         <Panel
-          label="EPOCH PROGRESS"
+          label="MARGIN USAGE"
           prop={
             <div className="flex h-1 w-1/3 items-center rounded-full bg-gray-600">
               <div className="h-1 rounded-full bg-success" style={{ width: `${20}%` }}></div>

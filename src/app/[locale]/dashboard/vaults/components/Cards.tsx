@@ -26,7 +26,7 @@ const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentage
   };
 
   return (
-    <div className="border-2 border-black rounded p-4 w-[21rem]">
+    <div className="border-2 border-black rounded p-4 w-[21rem] group hover:bg-gradient-to-br from-white/10 to-secondary/10">
       {/* Card header */}
       <div className="flex mb-12 gap-3">
         <div className="relative">
@@ -34,7 +34,9 @@ const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentage
           {hasdollar && <Image src={Dollar} alt="" className="absolute bottom-4 right-0 w-4 h-4" />}
         </div>
         <div className="font-bold">
-          <h1 className="text-lg"> {header} </h1>
+          <h1 className="text-lg transition duration-300 ease-in-out group-hover:translate-x-3 group-hover:scale-110">
+            {header}
+          </h1>
           <small className="text-muted-foreground">Call Spreads</small>
         </div>
       </div>
