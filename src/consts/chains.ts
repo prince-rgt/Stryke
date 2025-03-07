@@ -7,6 +7,7 @@ import {
   mantle as _mantle,
   sonic as _sonic,
   arbitrum,
+  arbitrumSepolia,
   base,
   blast,
 } from 'wagmi/chains';
@@ -51,7 +52,7 @@ const APP_TO_SUPPORTED_CHAINS = {
   // note: order is imp here! the first one will be used as the default chain
   [BUILD_APP_NAMES.KODIAK]: [berachainTestnetbArtio] as const,
   [BUILD_APP_NAMES.PANCAKESWAP]: [arbitrum] as const,
-  [BUILD_APP_NAMES.STRYKE]: [arbitrum, sonic, base, blast, mantle] as const,
+  [BUILD_APP_NAMES.STRYKE]: [arbitrum, sonic, base, blast, mantle, arbitrumSepolia] as const,
   [BUILD_APP_NAMES.BERACHAIN_TESTNET]: [berachainTestnetbArtio] as const,
 };
 
