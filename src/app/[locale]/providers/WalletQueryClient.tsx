@@ -50,7 +50,7 @@ const connectors = connectorsForWallets(
   },
 );
 
-const config: Config = createConfig({
+export const config: Config = createConfig({
   chains: SUPPORTED_CHAINS,
   ssr: true,
   client({ chain }) {
