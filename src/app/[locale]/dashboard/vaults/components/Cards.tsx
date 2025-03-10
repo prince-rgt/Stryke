@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import { Dollar } from '@/assets/images';
 
+import useVaultStore from '../../store/VaultStore';
+
 interface CardItemProps {
   header: string;
   imgSrc: string;
@@ -16,8 +18,10 @@ interface CardItemProps {
 
 const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentages }: CardItemProps) => {
   const router = useRouter();
+  const setSelectedVaultId = useVaultStore((state) => state.setSelectedVaultId);
 
   const handleDeposit = () => {
+    setSelectedVaultId(header);
     if (handleClick) {
       handleClick();
     } else {
