@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const SUBGRAPH_URL = 'https://api.studio.thegraph.com/query/74138/strykevault_subgraph/version/latest';
 
-interface Deposit {
+interface userEpochDeposits {
   id: string;
   epoch: string;
   vaultAddress: string;
@@ -12,11 +12,11 @@ interface Deposit {
 
 interface SubgraphResponse {
   data: {
-    deposits: Deposit[];
+    userEpochDeposits: userEpochDeposits[];
   };
 }
 
-export async function getUserDeposits(vaultAddress: string, userAddress: string): Promise<Deposit[]> {
+export async function getUserDeposits(vaultAddress: string, userAddress: string): Promise<userEpochDeposits[]> {
   const queryString = `
   {
     userEpochDeposits(where: { vaultAddress: "${vaultAddress}", userAddress: "${userAddress.toLowerCase()}" }) {
