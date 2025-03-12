@@ -89,6 +89,21 @@ export const CHAINS: {
     },
     displayTokens: ['ETH', 'CAKE'],
   },
+  [arbitrumSepolia.id]: {
+    name: 'arbitrumSepolia',
+    rpc: `https://arbitrum-sepolia-rpc.publicnode.com`,
+    publicRpc: 'https://arbitrum-sepolia.drpc.org',
+    explorer: 'https://sepolia.arbiscan.io/',
+    nativeToken: 'ETH',
+    icon: '/images/networks/arbitrum.svg',
+    tokenDecimals: {
+      USDT: 6,
+      USDC: 6,
+      WETH: 18,
+      ARB: 18,
+    },
+    displayTokens: ['ETH', 'CAKE'],
+  },
   [mantle.id]: {
     name: 'Mantle',
     rpc: `https://lb.drpc.org/ogrpc?network=mantle&dkey=${DRPC_API_KEY}`,

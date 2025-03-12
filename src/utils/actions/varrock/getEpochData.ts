@@ -9,14 +9,14 @@ export interface EpochData {
   endTime: Date | null;
   isSettled: boolean;
   isActive: boolean;
-  initialVaultAssets: string;
-  initialYearnDeposits: string;
-  initialUnutilizedAsset: string;
-  currentYearnDeposits: string;
-  currentUnutilizedAsset: string;
-  fundsBorrowed: string;
+  initialVaultAssets: bigint;
+  initialYearnDeposits: bigint;
+  initialUnutilizedAsset: bigint;
+  currentYearnDeposits: bigint;
+  currentUnutilizedAsset: bigint;
+  fundsBorrowed: bigint;
   finalVaultAssets: string;
-  yearnPnl: string;
+  yearnPnl: number;
   tradingPnl: string;
 }
 

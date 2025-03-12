@@ -1,9 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
 
-import { Input } from '@/components/ui/input';
+import { VaultDetails } from '@/utils/actions/varrock/getVaultDetails';
+
 import { Typography } from '@/components/ui/typography';
 import BackButton from '../components/BackButton';
 import Slider from '../components/EpochSlider';
@@ -13,18 +15,86 @@ import Positions from '../components/Positions';
 import SideNav from '../components/sidenav';
 import Timeline from '../components/Timeline';
 
-import { Arbitrum, BTC } from '../../../../../assets/images';
+import { Arbitrum, BTC, ETH } from '../../../../../assets/images';
 import useVaultStore from '../../store/VaultStore';
 
 const VaultsClient: React.FC = () => {
-  const selectedVaultId = useVaultStore((state) => state.selectedVaultId);
+  const { selectedVaultId, setUserAddress, getSelectedVaultDetails, getSelectedVaultAddress } = useVaultStore();
+
+  const [vaultDetails, setVaultDetails] = useState<VaultDetails | null>(null);
+  const [vaultAddress, setVaultAddress] = useState<`0x${string}` | null>(null);
+  const { address } = useAccount();
 
   useEffect(() => {
-    console.log('Selected Vault ID:', selectedVaultId);
-    // @Shivansh: You can use this ID to fetch specific vault data then, I can render the dynamic page based
-    // on the selected vault. For now i just render the header title close to the image. Once i have all the info, i'll
-    // make the entire page dynamic.
-  }, [selectedVaultId]);
+    if (selectedVaultId) {
+      setUserAddress(address as `0x${string}`);
+
+      const vaultAddr = getSelectedVaultAddress();
+      setVaultAddress(vaultAddr);
+
+      const fetchVaultDetails = async () => {
+        try {
+          const details = await getSelectedVaultDetails();
+          setVaultDetails(details);
+        } catch (err) {
+          console.error('Error fetching vault details:', err);
+        }
+      };
+      fetchVaultDetails();
+    }
+  }, [selectedVaultId, address, getSelectedVaultDetails, getSelectedVaultAddress, setUserAddress]);
+  const getVaultIcon = () => {
+    if (!selectedVaultId) return BTC;
+
+    if (selectedVaultId.includes('BTC')) {
+      return BTC;
+    } else if (selectedVaultId.includes('ETH')) {
+      return ETH;
+    }
+
+    return BTC;
+  };
+
+  const getAssetSymbol = () => {
+    if (!selectedVaultId) return 'WBTC';
+
+    if (selectedVaultId.includes('BTC')) {
+      return 'WBTC';
+    } else if (selectedVaultId.includes('ETH')) {
+      return 'WETH';
+    }
+
+    return 'WBTC';
+  };
+
+  const getVaultType = () => {
+    if (!selectedVaultId) return 'HYBRID';
+
+    if (selectedVaultId.includes('Superbull')) {
+      return 'SUPERBULL';
+    }
+
+    return 'HYBRID';
+  };
+
+  const getContractDuration = () => {
+    if (!selectedVaultId) return 'MONTHLY';
+
+    if (selectedVaultId.includes('Monthly')) {
+      return 'MONTHLY';
+    } else if (selectedVaultId.includes('Quarterly')) {
+      return 'QUARTERLY';
+    } else if (selectedVaultId.includes('Weekly')) {
+      return 'WEEKLY';
+    }
+
+    return 'MONTHLY';
+  };
+
+  const formatAddress = (address: string) => {
+    if (!address) return '0x000...000';
+    return `${address.substring(0, 5)}...${address.substring(address.length - 3)}`;
+  };
 
   return (
     <div className="flex w-full !pb-20 overflow-y-auto">
@@ -33,16 +103,15 @@ const VaultsClient: React.FC = () => {
         <div className="w-full flex flex-col gap-md mb-2">
           <div className="flex gap-2 !items-center my-2">
             <BackButton />
-            <Image src={BTC} alt="Bitcoin" className="w-8 h-8 mt-2" />
+            <Image src={getVaultIcon()} alt={selectedVaultId || 'Vault'} className="w-8 h-8 mt-2" />
             <Typography as="h1" variant="h4-bold" className="mt-1">
-              {' '}
-              {selectedVaultId}{' '}
+              {selectedVaultId || 'Vault'}
             </Typography>
           </div>
           <Typography as="p" variant="p-medium" className="text-muted-foreground">
-            The {selectedVaultId} Vault combines Yearn yields with DWF Labs&apos; CEX trading in monthly epochs. WBTC
-            deposits earn Yearn APY when idle, while DWF can borrow funds for market making, returning profits at epoch
-            end.
+            The {selectedVaultId || 'Vault'} combines Yearn yields with DWF Labs&apos; CEX trading in{' '}
+            {getContractDuration().toLowerCase()} epochs. {getAssetSymbol()} deposits earn Yearn APY when idle, while
+            DWF can borrow funds for market making, returning profits at epoch end.
           </Typography>
         </div>
 
@@ -52,16 +121,16 @@ const VaultsClient: React.FC = () => {
         {/* panes */}
         <div className="grid grid-cols-2 divide-x divide-background border border-background bg-secondary my-2">
           <div className="grid-row-2 grid divide-y divide-background">
-            <Panel label="TYPE" prop={<small className="font-mono underline">HYBRID</small>} />
-            <Panel label="CONTRACT" prop={<small className="font-mono">WEEKLY</small>} />
+            <Panel label="TYPE" prop={<small className="font-mono underline">{getVaultType()}</small>} />
+            <Panel label="CONTRACT" prop={<small className="font-mono">{getContractDuration()}</small>} />
           </div>
           <div className="grid-row-2 grid divide-y divide-background">
             <Panel
               label="DURATION"
               value={
                 <div className="flex gap-2 !items-center">
-                  <span>0x131...131</span>
-                  <Image src={Arbitrum} alt="" />
+                  <span>{vaultAddress ? formatAddress(vaultAddress) : '0x000...000'}</span>
+                  <Image src={Arbitrum} alt="Arbitrum" />
                 </div>
               }
             />
@@ -69,8 +138,8 @@ const VaultsClient: React.FC = () => {
               label="TVL"
               value={
                 <div className="flex gap-2">
-                  <span>311.11</span>
-                  <span className="text-muted-foreground">WBTC</span>
+                  <span>{vaultDetails?.totalAssets || '0.00'}</span>
+                  <span className="text-muted-foreground">{getAssetSymbol()}</span>
                 </div>
               }
             />
@@ -83,7 +152,7 @@ const VaultsClient: React.FC = () => {
           <Timeline />
         </div>
 
-        {/* Timeline */}
+        {/* Performance */}
         <div className="">
           <h1 className="font-semibold text-sm">Performance</h1>
           <Performance />
