@@ -12,7 +12,7 @@ export const VAULT_ADDRESSES: Record<string, `0x${string}`> = {
 interface VaultState {
   userAddress: `0x${string}` | null;
   selectedVaultId: string | null;
-  vaultDetails: Record<string, VaultDetails | null>;
+  vaultDetails: VaultDetails;
   loading: boolean;
   error: string | null;
 
@@ -28,11 +28,53 @@ interface VaultState {
 const useVaultStore = create<VaultState>((set, get) => ({
   userAddress: null,
   selectedVaultId: null,
-  vaultDetails: {},
+  vaultDetails: {
+    name: '',
+    symbol: '',
+    decimals: 18,
+    totalSupply: '0',
+    userBalance: '0',
+    userBalanceInAssets: '0',
+    userAllowance: '0',
+    asset: '0x0000000000000000000000000000000000000000',
+    assetName: '',
+    assetSymbol: '',
+    assetDecimals: 18,
+    assetUserBalance: '0',
+    assetUserAllowance: '0',
+    totalAssets: '0',
+    depositsPaused: false,
+    withdrawalsPaused: false,
+    currentEpoch: 0n,
+    epochDuration: '0',
+    maxBorrow: '0',
+    yearnVaultAddress: '',
+    currentEpochData: {
+      startTime: null,
+      endTime: null,
+      isSettled: false,
+      isActive: false,
+      initialVaultAssets: '0',
+      initialYearnDeposits: '0',
+      initialUnutilizedAsset: '0',
+      currentYearnDeposits: '0',
+      currentUnutilizedAsset: '0',
+      fundsBorrowed: '0',
+      finalVaultAssets: '0',
+      yearnPnl: 0,
+      tradingPnl: '0',
+    },
+  } as VaultDetails,
   loading: false,
   error: null,
   setUserAddress: (address) => set({ userAddress: address }),
-  setSelectedVaultId: (id) => set({ selectedVaultId: id }),
+  setSelectedVaultId: async (id) => {
+    set({ selectedVaultId: id });
+    const { userAddress } = get();
+    const vaultAddress = id ? VAULT_ADDRESSES[id] : null;
+    const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
+    set({ vaultDetails: vaultDetails });
+  },
   clearSelectedVault: () => set({ selectedVaultId: null }),
 
   setLoading: (isLoading) => set({ loading: isLoading }),
@@ -48,6 +90,12 @@ const useVaultStore = create<VaultState>((set, get) => ({
     const vaultAddress = selectedVaultId ? VAULT_ADDRESSES[selectedVaultId] : null;
     const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
     return vaultDetails;
+  },
+  updateVault: async () => {
+    const { selectedVaultId, userAddress } = get();
+    const vaultAddress = selectedVaultId ? VAULT_ADDRESSES[selectedVaultId] : null;
+    const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
+    set({ vaultDetails: vaultDetails });
   },
 }));
 
