@@ -7,8 +7,8 @@ import StrykeVaultAbi from '@/abi/StrykeVaultAbi';
 export const getYearnPnl = async (
   vaultAddress: `0x${string}`,
   yearnVaultAddress: `0x${string}`,
-  initialYearnDeposited: bigint,
-  currentYearnDeposited: bigint,
+  initialYearnDeposited: string,
+  currentYearnDeposited: string,
   decimals: number,
 ): Promise<number> => {
   try {
@@ -17,7 +17,7 @@ export const getYearnPnl = async (
       return 0;
     }
 
-    if (initialYearnDeposited <= BigInt(0)) {
+    if (Number(initialYearnDeposited) <= 0) {
       return 0;
     }
 
@@ -29,11 +29,16 @@ export const getYearnPnl = async (
           functionName: 'balanceOf',
           args: [vaultAddress],
         },
+        {
+          address: yearnVaultAddress,
+          abi: StrykeVaultAbi,
+          functionName: 'decimals',
+          args: [],
+        },
       ],
     });
 
     const sharesBalance = yearnResults[0].result as bigint;
-
     if (!sharesBalance || sharesBalance <= BigInt(0)) {
       return 0;
     }
@@ -49,12 +54,13 @@ export const getYearnPnl = async (
       ],
     });
 
-    const assetValue = assetResults[0].result as bigint;
+    const assetValue = formatUnits(assetResults[0].result as bigint, yearnResults[1].result!);
+    console.log(assetValue, 'assetValue');
 
-    const yieldAmount = assetValue - currentYearnDeposited;
+    const yieldAmount = Number(assetValue) - Number(currentYearnDeposited);
 
     const yieldPercentage =
-      initialYearnDeposited > BigInt(0) ? (Number(yieldAmount) * 100) / Number(initialYearnDeposited) : 0;
+      Number(initialYearnDeposited) > 0 ? (Number(yieldAmount) * 100) / Number(initialYearnDeposited) : 0;
 
     return parseFloat(yieldPercentage.toFixed(2));
   } catch (error) {

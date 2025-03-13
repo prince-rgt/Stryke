@@ -32,16 +32,16 @@ const Performance = () => {
         }
 
         const amountBorrowed = vaultDetails.currentEpochData.fundsBorrowed;
-        setBorrowedAmount(formatUnits(amountBorrowed as bigint, vaultDetails.decimals));
+        setBorrowedAmount(amountBorrowed.toString());
         setBorrowedSymbol(vaultDetails.assetSymbol || 'WBTC');
 
         const totalAssets = vaultDetails.totalAssets;
         const marginUsagePercentage =
-          BigInt(totalAssets) > 0 ? (Number(amountBorrowed) / Number(totalAssets)) * 100 : 0;
+          BigInt(totalAssets) > 0 ? (Number(amountBorrowed) / (Number(totalAssets) + Number(amountBorrowed))) * 100 : 0;
         setMarginUsage(marginUsagePercentage);
 
         const maxBorrow = vaultDetails.maxBorrow || 1;
-        const utilizationPercentage = (Number(amountBorrowed) / Number(maxBorrow)) * 100;
+        const utilizationPercentage = (Number(amountBorrowed) / (Number(maxBorrow) + Number(amountBorrowed))) * 100;
         setUtilizationRate(Math.round(utilizationPercentage));
 
         let yieldPercentage = 0;
@@ -59,7 +59,7 @@ const Performance = () => {
         setYearnYield(yieldPercentage);
 
         const mmPnlPercentage =
-          vaultDetails.currentEpochData.initialYearnDeposits > 0
+          Number(vaultDetails.currentEpochData.initialYearnDeposits) > 0
             ? (Number(vaultDetails.currentEpochData.tradingPnl) /
                 Number(vaultDetails.currentEpochData.initialYearnDeposits)) *
               100

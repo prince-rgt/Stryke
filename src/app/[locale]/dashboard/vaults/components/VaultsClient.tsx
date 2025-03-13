@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
 import { VaultDetails } from '@/utils/actions/varrock/getVaultDetails';
+import { formatAddress } from '@/utils/helpers';
 
 import { Typography } from '@/components/ui/typography';
 import BackButton from '../components/BackButton';
@@ -91,11 +92,6 @@ const VaultsClient: React.FC = () => {
     return 'MONTHLY';
   };
 
-  const formatAddress = (address: string) => {
-    if (!address) return '0x000...000';
-    return `${address.substring(0, 5)}...${address.substring(address.length - 3)}`;
-  };
-
   return (
     <div className="flex w-full !pb-20 overflow-y-auto">
       <div className="w-full flex flex-col p-md">
@@ -138,7 +134,7 @@ const VaultsClient: React.FC = () => {
               label="TVL"
               value={
                 <div className="flex gap-2">
-                  <span>{vaultDetails?.totalAssets || '0.00'}</span>
+                  <span>{parseFloat(vaultDetails?.totalAssets as string).toFixed(2) || '0.00'}</span>
                   <span className="text-muted-foreground">{getAssetSymbol()}</span>
                 </div>
               }

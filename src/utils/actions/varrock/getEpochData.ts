@@ -9,12 +9,12 @@ export interface EpochData {
   endTime: Date | null;
   isSettled: boolean;
   isActive: boolean;
-  initialVaultAssets: bigint;
-  initialYearnDeposits: bigint;
-  initialUnutilizedAsset: bigint;
-  currentYearnDeposits: bigint;
-  currentUnutilizedAsset: bigint;
-  fundsBorrowed: bigint;
+  initialVaultAssets: string;
+  initialYearnDeposits: string;
+  initialUnutilizedAsset: string;
+  currentYearnDeposits: string;
+  currentUnutilizedAsset: string;
+  fundsBorrowed: string;
   finalVaultAssets: string;
   yearnPnl: number;
   tradingPnl: string;
@@ -31,12 +31,12 @@ export const getEpochData = async (
       endTime: null,
       isSettled: false,
       isActive: false,
-      initialVaultAssets: BigInt(0),
-      initialYearnDeposits: BigInt(0),
-      initialUnutilizedAsset: BigInt(0),
-      currentYearnDeposits: BigInt(0),
-      currentUnutilizedAsset: BigInt(0),
-      fundsBorrowed: BigInt(0),
+      initialVaultAssets: '0',
+      initialYearnDeposits: '0',
+      initialUnutilizedAsset: '0',
+      currentYearnDeposits: '0',
+      currentUnutilizedAsset: '0',
+      fundsBorrowed: '0',
       finalVaultAssets: '0',
       yearnPnl: 0,
       tradingPnl: '0',
@@ -65,12 +65,12 @@ export const getEpochData = async (
         endTime: data.endTime ? new Date(Number(data.endTime) * 1000) : null,
         isSettled: data.isSettled,
         isActive: data.isEpochActive,
-        initialVaultAssets: BigInt(formatUnits(data.initialVaultAssets, decimals)),
-        initialYearnDeposits: BigInt(formatUnits(data.initialYearnDeposits, decimals)),
-        initialUnutilizedAsset: BigInt(formatUnits(data.initialUnutilizedAsset, decimals)),
-        currentYearnDeposits: BigInt(formatUnits(data.currentYearnDeposits, decimals)),
-        currentUnutilizedAsset: BigInt(formatUnits(data.currentUnutilizedAsset, decimals)),
-        fundsBorrowed: BigInt(formatUnits(data.fundsBorrowed, decimals)),
+        initialVaultAssets: formatUnits(data.initialVaultAssets, decimals),
+        initialYearnDeposits: formatUnits(data.initialYearnDeposits, decimals),
+        initialUnutilizedAsset: formatUnits(data.initialUnutilizedAsset, decimals),
+        currentYearnDeposits: formatUnits(data.currentYearnDeposits, decimals),
+        currentUnutilizedAsset: formatUnits(data.currentUnutilizedAsset, decimals),
+        fundsBorrowed: formatUnits(data.fundsBorrowed, decimals),
         finalVaultAssets: formatUnits(data.finalVaultAssets, decimals),
         yearnPnl: Number(formatUnits(data.yearnPnl, decimals)),
         tradingPnl: formatUnits(data.tradingPnl, decimals),

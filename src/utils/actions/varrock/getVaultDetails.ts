@@ -88,7 +88,6 @@ export const getVaultDetails = async (
         },
       ],
     });
-    console.log(assetResults, 'assetResults');
 
     const decimals = Number(tokenResults[2].result || 18);
     const assetDecimals = Number(assetResults[2].result || 18);

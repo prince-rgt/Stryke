@@ -39,7 +39,6 @@ export async function getUserDeposits(vaultAddress: string, userAddress: string)
         },
       },
     );
-    console.log(response, 'response');
 
     if (response.data && response.data.data && response.data.data.userEpochDeposits) {
       return response.data.data.userEpochDeposits;

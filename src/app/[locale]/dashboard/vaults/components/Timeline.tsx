@@ -12,7 +12,6 @@ import Panel from './Panel';
 const Timeline = () => {
   const { getSelectedVaultAddress, selectedVaultId, userAddress } = useVaultStore();
 
-  const [epochDuration, setEpochDuration] = useState<number | null>(null);
   const [epochs, setEpochs] = useState<{
     previous: { id: bigint; date: Date | null };
     current: { id: bigint; date: Date | null };
@@ -28,7 +27,6 @@ const Timeline = () => {
         const vaultDetails = await getVaultDetails(vaultAddress!, userAddress as `0x${string}`);
 
         const currentEpochId = vaultDetails.currentEpoch;
-        setEpochDuration(Number(vaultDetails.epochDuration));
 
         const previousEpochId = currentEpochId > 0n ? currentEpochId - 1n : 0n;
         const nextEpochId = currentEpochId + 1n;
@@ -41,7 +39,7 @@ const Timeline = () => {
 
         const nextEpochStartTime =
           currentEpochData.endTime ||
-          (currentEpochData.startTime && epochDuration
+          (currentEpochData.startTime && vaultDetails.epochDuration
             ? new Date(currentEpochData.startTime.getTime() + Number(vaultDetails.epochDuration) * 1000)
             : new Date(Date.now() + Number(vaultDetails.epochDuration) * 1000));
 
@@ -55,48 +53,39 @@ const Timeline = () => {
         });
 
         setNextEpochTVL(vaultDetails.totalAssets);
-      } catch (err) {}
+      } catch (err) {
+        console.error('Error fetching vault details:', err);
+      }
     };
 
-    fetchVaultDetails();
+    if (selectedVaultId && userAddress) {
+      fetchVaultDetails();
+    }
+  }, [getSelectedVaultAddress, selectedVaultId, userAddress]);
 
-    const updateTimeInterval = setInterval(() => {
+  useEffect(() => {
+    const updateCountdown = () => {
       if (epochs?.next?.date) {
         const now = new Date();
         const diff = epochs.next.date.getTime() - now.getTime();
 
         if (diff <= 0) {
-          setTimeToNextEpoch('0D 0H 0M');
+          setTimeToNextEpoch('0D 0H 0M 0S');
           return;
         }
 
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        setTimeToNextEpoch(`${days}D ${hours}H ${minutes}M`);
+        setTimeToNextEpoch(`${days}D ${hours}H ${minutes}M ${seconds}S`);
       }
-    }, 60000);
+    };
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
 
-    return () => clearInterval(updateTimeInterval);
-  }, [getSelectedVaultAddress, selectedVaultId]);
-
-  useEffect(() => {
-    if (epochs?.next?.date) {
-      const now = new Date();
-      const diff = epochs.next.date.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setTimeToNextEpoch('0D 0H 0M');
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-      setTimeToNextEpoch(`${days}D ${hours}H ${minutes}M`);
-    }
+    return () => clearInterval(interval);
   }, [epochs]);
 
   return (

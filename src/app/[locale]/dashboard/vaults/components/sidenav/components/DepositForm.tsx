@@ -35,15 +35,16 @@ const DepositForm = () => {
       const diff = nextEpochDate.getTime() - now.getTime();
 
       if (diff <= 0) {
-        setTimeToNextEpoch('0D 0H 0M');
+        setTimeToNextEpoch('0D 0H 0M 0S');
         return;
       }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      setTimeToNextEpoch(`${days}D ${hours}H ${minutes}M`);
+      setTimeToNextEpoch(`${days}D ${hours}H ${minutes}M ${seconds}S`);
     }
   };
 
@@ -51,7 +52,6 @@ const DepositForm = () => {
     try {
       const details = await getSelectedVaultDetails();
       setVaultDetails(details);
-      console.log('fetchVaultData', details);
 
       setIsCurrentEpochActive(details.currentEpochData.isActive);
 
@@ -65,13 +65,16 @@ const DepositForm = () => {
 
       const nextEpochId = currentEpochId + 1n;
       setNextEpoch(nextEpochId);
+      const currentEpochData = details.currentEpochData;
 
-      const currentEpochStartTime = new Date();
-      const nextEpochStartTime = new Date(currentEpochStartTime.getTime() + Number(details.epochDuration) * 1000);
+      const nextEpochStartTime =
+        currentEpochData.endTime ||
+        (currentEpochData.startTime && details.epochDuration
+          ? new Date(currentEpochData.startTime.getTime() + Number(details.epochDuration) * 1000)
+          : new Date(Date.now() + Number(details.epochDuration) * 1000));
+
       setNextEpochDate(nextEpochStartTime);
-
       setTokenBalance(details.assetUserBalance);
-
       checkAllowance(details);
     } catch (err) {
       console.error('Error fetching vault data:', err);
@@ -86,7 +89,7 @@ const DepositForm = () => {
 
   useEffect(() => {
     updateCountdown();
-    const updateTimeInterval = setInterval(updateCountdown, 60000);
+    const updateTimeInterval = setInterval(updateCountdown, 1000);
     return () => clearInterval(updateTimeInterval);
   }, [nextEpochDate]);
 
