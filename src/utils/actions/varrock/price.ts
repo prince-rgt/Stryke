@@ -2,7 +2,7 @@
 
 import { PurchaseQuote } from '@/types/varrock';
 
-import { QuoteRequestDto, QuoteResponseDto } from '@stryke-xyz/shared-types';
+import { QuoteResponseDto } from '@stryke-xyz/shared-types';
 import axios from 'axios';
 import { z } from 'zod';
 
@@ -14,6 +14,17 @@ import {
   PriceCandleResponseSchema,
   PriceCandles,
 } from '@/schemas/varrock';
+
+export interface QuoteRequestDto {
+  user?: `0x${string}`;
+  strike: number;
+  markPrice: number;
+  type: string;
+  amount: number;
+  ttl: number;
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+}
 
 export async function getMarkPrice(
   chainId = 42161,

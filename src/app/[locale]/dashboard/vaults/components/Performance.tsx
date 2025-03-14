@@ -30,41 +30,46 @@ const Performance = () => {
           console.error('No vault selected or vault details not available');
           return;
         }
+        const isSettled = vaultDetails.currentEpochData.isSettled;
+        if (!isSettled) {
+          const amountBorrowed = vaultDetails.currentEpochData.fundsBorrowed;
 
-        const amountBorrowed = vaultDetails.currentEpochData.fundsBorrowed;
-        setBorrowedAmount(amountBorrowed.toString());
-        setBorrowedSymbol(vaultDetails.assetSymbol || 'WBTC');
+          setBorrowedAmount(amountBorrowed.toString());
+          setBorrowedSymbol(vaultDetails.assetSymbol || 'WBTC');
 
-        const totalAssets = vaultDetails.totalAssets;
-        const marginUsagePercentage =
-          BigInt(totalAssets) > 0 ? (Number(amountBorrowed) / (Number(totalAssets) + Number(amountBorrowed))) * 100 : 0;
-        setMarginUsage(marginUsagePercentage);
+          const totalAssets = vaultDetails.totalAssets;
+          const marginUsagePercentage =
+            Number(totalAssets) > 0
+              ? (Number(amountBorrowed) / (Number(totalAssets) + Number(amountBorrowed))) * 100
+              : 0;
+          setMarginUsage(marginUsagePercentage);
 
-        const maxBorrow = vaultDetails.maxBorrow || 1;
-        const utilizationPercentage = (Number(amountBorrowed) / (Number(maxBorrow) + Number(amountBorrowed))) * 100;
-        setUtilizationRate(Math.round(utilizationPercentage));
+          const maxBorrow = vaultDetails.maxBorrow || 1;
+          const utilizationPercentage = (Number(amountBorrowed) / (Number(maxBorrow) + Number(amountBorrowed))) * 100;
+          setUtilizationRate(Math.round(utilizationPercentage));
 
-        let yieldPercentage = 0;
-        if (vaultDetails.currentEpochData.yearnPnl && vaultDetails.currentEpochData.yearnPnl > 0) {
-          yieldPercentage = vaultDetails.currentEpochData.yearnPnl;
-        } else {
-          yieldPercentage = await getYearnPnl(
-            vaultAddress,
-            vaultDetails.yearnVaultAddress as `0x${string}`,
-            vaultDetails.currentEpochData.initialYearnDeposits,
-            vaultDetails.currentEpochData.currentYearnDeposits,
-            vaultDetails.decimals,
-          );
+          let yieldPercentage = 0;
+          if (vaultDetails.currentEpochData.yearnPnl && vaultDetails.currentEpochData.yearnPnl > 0) {
+            yieldPercentage = vaultDetails.currentEpochData.yearnPnl;
+          } else {
+            yieldPercentage = await getYearnPnl(
+              vaultAddress,
+              vaultDetails.yearnVaultAddress as `0x${string}`,
+              vaultDetails.currentEpochData.initialYearnDeposits,
+              vaultDetails.currentEpochData.currentYearnDeposits,
+              vaultDetails.decimals,
+            );
+          }
+          setYearnYield(yieldPercentage);
+
+          const mmPnlPercentage =
+            Number(vaultDetails.currentEpochData.initialYearnDeposits) > 0
+              ? (Number(vaultDetails.currentEpochData.tradingPnl) /
+                  Number(vaultDetails.currentEpochData.initialYearnDeposits)) *
+                100
+              : 0;
+          setMmPnl(mmPnlPercentage);
         }
-        setYearnYield(yieldPercentage);
-
-        const mmPnlPercentage =
-          Number(vaultDetails.currentEpochData.initialYearnDeposits) > 0
-            ? (Number(vaultDetails.currentEpochData.tradingPnl) /
-                Number(vaultDetails.currentEpochData.initialYearnDeposits)) *
-              100
-            : 0;
-        setMmPnl(mmPnlPercentage);
       } catch (error) {
         console.error('Error fetching performance data:', error);
       }

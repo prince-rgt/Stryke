@@ -16,7 +16,7 @@ import {
   SymbolResolveExtension,
 } from '@/../../public/charting_library';
 import { useMemo, useRef } from 'react';
-import { arbitrum, base, berachainTestnetbArtio, blast, Chain, mantle, sonic } from 'viem/chains';
+import { arbitrum, arbitrumSepolia, base, berachainTestnetbArtio, blast, Chain, mantle, sonic } from 'viem/chains';
 
 import { RESOLUTION_TO_VARROCK_INTERVAL } from '@/app/[locale]/trade/[[...market]]/components/tradingview-chart/consts';
 
@@ -38,6 +38,9 @@ const pairToExchange: {
     'ARB/USDC.e': AMMs.UNISWAP,
     'WETH/USDC.e': AMMs.UNISWAP,
     'WBTC/USDC.e': AMMs.UNISWAP,
+  },
+  [arbitrumSepolia.id]: {
+    'DEGEN/WETH': AMMs.UNISWAP,
   },
   [base.id]: {
     'DEGEN/WETH': AMMs.UNISWAP,

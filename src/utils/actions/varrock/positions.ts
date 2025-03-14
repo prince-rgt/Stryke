@@ -2,11 +2,17 @@
 
 import { Deposit, Purchase } from '@/types/varrock';
 
-import { PurchasePositionsRequestDto } from '@stryke-xyz/shared-types';
 import axios from 'axios';
 
 import { VARROCK_BASE_API_URL } from '@/consts/env';
 
+export interface PurchasePositionsRequestDto {
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+}
 export async function getBuyPositions(queryOptions: PurchasePositionsRequestDto): Promise<Purchase[]> {
   const { user, optionMarket, chainId, first, skip } = queryOptions;
   return axios
