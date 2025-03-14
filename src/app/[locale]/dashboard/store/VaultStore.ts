@@ -11,6 +11,7 @@ export const VAULT_ADDRESSES: Record<string, `0x${string}`> = {
 
 interface VaultState {
   userAddress: `0x${string}` | null;
+  vaultAddress: `0x${string}` | null;
   selectedVaultId: string | null;
   vaultDetails: VaultDetails;
   loading: boolean;
@@ -23,10 +24,12 @@ interface VaultState {
   setError: (error: string | null) => void;
   getSelectedVaultAddress: () => `0x${string}` | null;
   getSelectedVaultDetails: () => Promise<VaultDetails>;
+  updateVault: () => Promise<void>;
 }
 
 const useVaultStore = create<VaultState>((set, get) => ({
   userAddress: null,
+  vaultAddress: null,
   selectedVaultId: null,
   vaultDetails: {
     name: '',
@@ -72,6 +75,7 @@ const useVaultStore = create<VaultState>((set, get) => ({
     set({ selectedVaultId: id });
     const { userAddress } = get();
     const vaultAddress = id ? VAULT_ADDRESSES[id] : null;
+    set({ vaultAddress: vaultAddress });
     const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
     set({ vaultDetails: vaultDetails });
   },
@@ -86,14 +90,12 @@ const useVaultStore = create<VaultState>((set, get) => ({
   },
 
   getSelectedVaultDetails: async () => {
-    const { selectedVaultId, userAddress } = get();
-    const vaultAddress = selectedVaultId ? VAULT_ADDRESSES[selectedVaultId] : null;
+    const { userAddress, vaultAddress } = get();
     const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
     return vaultDetails;
   },
   updateVault: async () => {
-    const { selectedVaultId, userAddress } = get();
-    const vaultAddress = selectedVaultId ? VAULT_ADDRESSES[selectedVaultId] : null;
+    const { userAddress, vaultAddress } = get();
     const vaultDetails = await getVaultDetails(vaultAddress as `0x${string}`, userAddress as `0x${string}`);
     set({ vaultDetails: vaultDetails });
   },

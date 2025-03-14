@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useAccount } from 'wagmi';
 
 import { Dollar } from '@/assets/images';
 
@@ -18,9 +19,12 @@ interface CardItemProps {
 
 const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentages }: CardItemProps) => {
   const router = useRouter();
+  const { address } = useAccount();
+  const { setUserAddress } = useVaultStore();
   const setSelectedVaultId = useVaultStore((state) => state.setSelectedVaultId);
 
   const handleDeposit = () => {
+    setUserAddress(address as `0x${string}`);
     setSelectedVaultId(header);
     if (handleClick) {
       handleClick();

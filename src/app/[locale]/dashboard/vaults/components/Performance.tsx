@@ -12,20 +12,14 @@ import Panel from './Panel';
 
 const Performance = () => {
   const [marginUsage, setMarginUsage] = useState(0);
-  const [borrowedAmount, setBorrowedAmount] = useState('0');
-  const [borrowedSymbol, setBorrowedSymbol] = useState('WBTC');
-  const [utilizationRate, setUtilizationRate] = useState(0);
   const [yearnYield, setYearnYield] = useState(0);
   const [mmPnl, setMmPnl] = useState(0);
 
-  const { getSelectedVaultDetails, getSelectedVaultAddress, loading } = useVaultStore();
+  const { loading, vaultDetails, vaultAddress } = useVaultStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const vaultDetails = await getSelectedVaultDetails();
-        const vaultAddress = getSelectedVaultAddress();
-
         if (!vaultDetails || !vaultAddress) {
           console.error('No vault selected or vault details not available');
           return;
@@ -33,20 +27,13 @@ const Performance = () => {
         const isSettled = vaultDetails.currentEpochData.isSettled;
         if (!isSettled) {
           const amountBorrowed = vaultDetails.currentEpochData.fundsBorrowed;
-
-          setBorrowedAmount(amountBorrowed.toString());
-          setBorrowedSymbol(vaultDetails.assetSymbol || 'WBTC');
-
-          const totalAssets = vaultDetails.totalAssets;
-          const marginUsagePercentage =
-            Number(totalAssets) > 0
-              ? (Number(amountBorrowed) / (Number(totalAssets) + Number(amountBorrowed))) * 100
-              : 0;
-          setMarginUsage(marginUsagePercentage);
-
-          const maxBorrow = vaultDetails.maxBorrow || 1;
-          const utilizationPercentage = (Number(amountBorrowed) / (Number(maxBorrow) + Number(amountBorrowed))) * 100;
-          setUtilizationRate(Math.round(utilizationPercentage));
+          const maxBorrow = vaultDetails.maxBorrow || 0;
+          let numerator = Number(amountBorrowed) * 100;
+          let denominator = Number(maxBorrow) + Number(amountBorrowed);
+          if (denominator != 0) {
+            let result = numerator / denominator;
+            setMarginUsage(result);
+          }
 
           let yieldPercentage = 0;
           if (vaultDetails.currentEpochData.yearnPnl && vaultDetails.currentEpochData.yearnPnl > 0) {
@@ -78,7 +65,7 @@ const Performance = () => {
     if (!loading) {
       fetchData();
     }
-  }, [getSelectedVaultDetails, getSelectedVaultAddress, loading]);
+  }, [vaultDetails, vaultAddress, loading]);
 
   return (
     <div className="w-full flex bg-secondary">
@@ -95,12 +82,12 @@ const Performance = () => {
           label="BORROWED AMOUNT"
           value={
             <div className="flex gap-2 !items-center">
-              <span>{borrowedAmount}</span>
-              <span>{borrowedSymbol}</span>
+              <span>{vaultDetails.currentEpochData.fundsBorrowed.toString()}</span>
+              <span>{vaultDetails.assetSymbol}</span>
             </div>
           }
         />
-        <Panel label="UTILIZATION RATE" value={<span>{utilizationRate} %</span>} />
+        <Panel label="UTILIZATION RATE" value={<span>{marginUsage.toFixed(2)} %</span>} />
         <Panel
           label="YEARN YIELD"
           labelClasses="underline"

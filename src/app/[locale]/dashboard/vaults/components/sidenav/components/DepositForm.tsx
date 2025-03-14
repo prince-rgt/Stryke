@@ -4,8 +4,8 @@ import useVaultStore from '@/app/[locale]/dashboard/store/VaultStore';
 import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
 
+import checkAllowance from '@/utils/actions/varrock/checkAlllowance';
 import { approveTokenForVault, depositToVault } from '@/utils/actions/varrock/writetransactions';
 import { formatDate } from '@/utils/helpers';
 
@@ -16,18 +16,13 @@ import { BTC } from '@/assets/images';
 const DepositForm = () => {
   const [amount, setAmount] = useState<string>('0');
   const [tokenSymbol, setTokenSymbol] = useState<string>('WBTC');
-  const [currentEpoch, setCurrentEpoch] = useState<bigint | null>(null);
   const [nextEpoch, setNextEpoch] = useState<bigint | null>(null);
   const [nextEpochDate, setNextEpochDate] = useState<Date | null>(null);
   const [timeToNextEpoch, setTimeToNextEpoch] = useState<string>('');
-  const [tokenBalance, setTokenBalance] = useState<string>('0');
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const [vaultDetails, setVaultDetails] = useState<any>(null);
-  const [isCurrentEpochActive, setIsCurrentEpochActive] = useState<boolean>(false);
   const [needsApproval, setNeedsApproval] = useState<boolean>(false);
 
-  const { address: user = '0x' } = useAccount();
-  const { getSelectedVaultAddress, selectedVaultId, getSelectedVaultDetails } = useVaultStore();
+  const { selectedVaultId, userAddress, vaultDetails, vaultAddress, updateVault } = useVaultStore();
 
   const updateCountdown = () => {
     if (nextEpochDate) {
@@ -50,32 +45,26 @@ const DepositForm = () => {
 
   const fetchVaultData = async () => {
     try {
-      const details = await getSelectedVaultDetails();
-      setVaultDetails(details);
-
-      setIsCurrentEpochActive(details.currentEpochData.isActive);
-
       if (selectedVaultId?.includes('BTC')) {
         setTokenSymbol('WBTC');
       } else if (selectedVaultId?.includes('ETH')) {
         setTokenSymbol('WETH');
       }
-      const currentEpochId = details.currentEpoch;
-      setCurrentEpoch(currentEpochId);
+      const currentEpochId = vaultDetails.currentEpoch;
 
       const nextEpochId = currentEpochId + 1n;
       setNextEpoch(nextEpochId);
-      const currentEpochData = details.currentEpochData;
+      const currentEpochData = vaultDetails.currentEpochData;
 
       const nextEpochStartTime =
         currentEpochData.endTime ||
-        (currentEpochData.startTime && details.epochDuration
-          ? new Date(currentEpochData.startTime.getTime() + Number(details.epochDuration) * 1000)
-          : new Date(Date.now() + Number(details.epochDuration) * 1000));
+        (currentEpochData.startTime && vaultDetails.epochDuration
+          ? new Date(currentEpochData.startTime.getTime() + Number(vaultDetails.epochDuration) * 1000)
+          : new Date(Date.now() + Number(vaultDetails.epochDuration) * 1000));
 
       setNextEpochDate(nextEpochStartTime);
-      setTokenBalance(details.assetUserBalance);
-      checkAllowance(details);
+
+      await checkAllowanceForDeposit();
     } catch (err) {
       console.error('Error fetching vault data:', err);
     }
@@ -85,7 +74,7 @@ const DepositForm = () => {
     if (selectedVaultId) {
       fetchVaultData();
     }
-  }, [selectedVaultId, getSelectedVaultDetails]);
+  }, [selectedVaultId, vaultDetails]);
 
   useEffect(() => {
     updateCountdown();
@@ -94,21 +83,27 @@ const DepositForm = () => {
   }, [nextEpochDate]);
 
   useEffect(() => {
-    if (vaultDetails) {
-      checkAllowance(vaultDetails);
+    if (vaultDetails && userAddress && vaultAddress && amount !== '0') {
+      checkAllowanceForDeposit();
     }
-  }, [amount]);
+  }, [amount, vaultDetails, userAddress, vaultAddress]);
 
-  const checkAllowance = (details = vaultDetails) => {
-    if (!details || !amount || parseFloat(amount) <= 0) {
+  const checkAllowanceForDeposit = async () => {
+    if (!vaultDetails || !userAddress || !vaultAddress || !amount || parseFloat(amount) <= 0) {
       setNeedsApproval(false);
       return;
     }
 
     try {
-      const allowance = details.assetUserAllowance;
-      const needsApprove = allowance < amount;
-      setNeedsApproval(needsApprove);
+      const hasAllowance = await checkAllowance(
+        vaultDetails.asset as `0x${string}`,
+        vaultAddress as `0x${string}`,
+        userAddress as `0x${string}`,
+        amount,
+        vaultDetails.assetDecimals,
+      );
+
+      setNeedsApproval(!hasAllowance);
     } catch (error) {
       console.error('Error checking allowance:', error);
       setNeedsApproval(false);
@@ -120,16 +115,14 @@ const DepositForm = () => {
   };
 
   const handleMaxClick = () => {
-    setAmount(tokenBalance);
+    setAmount(vaultDetails.assetUserBalance);
   };
 
   const handleApprove = async () => {
     if (!vaultDetails || !amount || parseFloat(amount) <= 0) {
       return;
     }
-
-    const vaultAddress = getSelectedVaultAddress();
-    if (!vaultAddress || !user) {
+    if (!vaultAddress || !userAddress) {
       return;
     }
 
@@ -144,6 +137,7 @@ const DepositForm = () => {
       );
 
       if (result) {
+        await checkAllowanceForDeposit();
         await fetchVaultData();
         setIsProcessing(false);
       } else {
@@ -160,17 +154,17 @@ const DepositForm = () => {
       return;
     }
 
-    const vaultAddress = getSelectedVaultAddress();
-    if (!vaultAddress || !user) {
+    if (!vaultAddress || !userAddress) {
       return;
     }
 
     setIsProcessing(true);
 
     try {
-      const result = await depositToVault(vaultAddress, amount, vaultDetails.assetDecimals, user);
+      const result = await depositToVault(vaultAddress, amount, vaultDetails.assetDecimals, userAddress);
 
       if (result) {
+        updateVault();
         setAmount('0');
         await fetchVaultData();
       }
@@ -203,7 +197,7 @@ const DepositForm = () => {
   };
 
   const handleButtonClick = () => {
-    if (!amount || amount === '0' || isProcessing || isCurrentEpochActive) {
+    if (!amount || amount === '0' || isProcessing || vaultDetails.currentEpochData.isActive) {
       return;
     }
 
@@ -240,7 +234,7 @@ const DepositForm = () => {
             <span>Balance: </span>
             <span className="text-white">
               {' '}
-              {Number(tokenBalance).toFixed(4)}{' '}
+              {Number(vaultDetails.assetUserBalance).toFixed(4)}{' '}
               <button onClick={handleMaxClick} className="text-[#EBFF00] ml-1">
                 Max
               </button>
@@ -272,13 +266,15 @@ const DepositForm = () => {
 
       <div className="flex flex-col mt-3 text-sm">
         <Button
-          disabled={!amount || amount === '0' || isProcessing || isCurrentEpochActive}
+          disabled={!amount || amount === '0' || isProcessing || vaultDetails.currentEpochData.isActive}
           onClick={handleButtonClick}
           className={`relative ${needsApproval ? 'bg-yellow-600 hover:bg-yellow-700' : ''}`}>
-          {isCurrentEpochActive && amount && amount !== '0' ? 'Current Epoch Active' : getButtonText()}
+          {vaultDetails.currentEpochData.isActive && amount && amount !== '0'
+            ? 'Current Epoch Active'
+            : getButtonText()}
         </Button>
 
-        {isCurrentEpochActive && amount && amount !== '0' && (
+        {vaultDetails.currentEpochData.isActive && amount && amount !== '0' && (
           <p className="text-xs text-yellow-300 mt-2">
             Cannot deposit during active epoch. Please wait for the next epoch.
           </p>

@@ -10,7 +10,7 @@ import { ButtonV1 } from './Buttons';
 import Panel from './Panel';
 
 const Timeline = () => {
-  const { getSelectedVaultAddress, selectedVaultId, userAddress } = useVaultStore();
+  const { getSelectedVaultAddress, vaultAddress, selectedVaultId, userAddress, vaultDetails } = useVaultStore();
 
   const [epochs, setEpochs] = useState<{
     previous: { id: bigint; date: Date | null };
@@ -23,11 +23,7 @@ const Timeline = () => {
   useEffect(() => {
     const fetchVaultDetails = async () => {
       try {
-        const vaultAddress = getSelectedVaultAddress();
-        const vaultDetails = await getVaultDetails(vaultAddress!, userAddress as `0x${string}`);
-
         const currentEpochId = vaultDetails.currentEpoch;
-
         const previousEpochId = currentEpochId > 0n ? currentEpochId - 1n : 0n;
         const nextEpochId = currentEpochId + 1n;
 
@@ -61,7 +57,7 @@ const Timeline = () => {
     if (selectedVaultId && userAddress) {
       fetchVaultDetails();
     }
-  }, [getSelectedVaultAddress, selectedVaultId, userAddress]);
+  }, [vaultAddress, selectedVaultId, userAddress, vaultDetails]);
 
   useEffect(() => {
     const updateCountdown = () => {

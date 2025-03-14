@@ -19,13 +19,11 @@ interface PositionData {
 
 const Positions = () => {
   const [positions, setPositions] = useState<PositionData[]>([]);
-  const { userAddress, getSelectedVaultAddress, getSelectedVaultDetails } = useVaultStore();
+  const { userAddress, vaultAddress, vaultDetails } = useVaultStore();
 
   useEffect(() => {
     const fetchPositions = async () => {
       try {
-        const vaultAddress = getSelectedVaultAddress();
-
         if (!vaultAddress || !userAddress) {
           setPositions([]);
 
@@ -33,7 +31,6 @@ const Positions = () => {
         }
 
         const deposits = await getUserDeposits(vaultAddress, userAddress);
-        const vaultDetails = await getSelectedVaultDetails();
         const formattedPositions: PositionData[] = deposits.map((deposit, index) => {
           const epochNumber = parseInt(deposit.epoch);
 
@@ -74,7 +71,7 @@ const Positions = () => {
     };
 
     fetchPositions();
-  }, [userAddress, getSelectedVaultAddress, getSelectedVaultDetails]);
+  }, [userAddress, vaultAddress, vaultDetails]);
 
   if (positions.length === 0) {
     return <div className="pb-12 text-center py-8">No positions found for this vault.</div>;

@@ -7,8 +7,7 @@ import QuickLinks from './components/QuickLinks';
 import useVaultStore from '../../../store/VaultStore';
 
 const SideNav = () => {
-  const { address } = useAccount();
-  const { getSelectedVaultDetails, setUserAddress, selectedVaultId } = useVaultStore();
+  const { vaultDetails, selectedVaultId, userAddress } = useVaultStore();
 
   const [vaultData, setVaultData] = useState({
     position: '0',
@@ -20,21 +19,13 @@ const SideNav = () => {
   });
 
   useEffect(() => {
-    if (address) {
-      setUserAddress(address);
-    }
-  }, [address, setUserAddress]);
-
-  useEffect(() => {
     const fetchVaultData = async () => {
-      if (!selectedVaultId || !address) {
+      if (!selectedVaultId || !userAddress) {
         return;
       }
 
       try {
-        const details = await getSelectedVaultDetails();
-
-        const userPosition = parseFloat(details.userBalanceInAssets) || 0;
+        const userPosition = parseFloat(vaultDetails.userBalanceInAssets) || 0;
 
         if (userPosition > 0) {
           const earnedAmount = (Math.random() * 0.09 + 0.01) * userPosition;
@@ -52,7 +43,7 @@ const SideNav = () => {
             queuedWithdrawal,
             pnl: pnlValue,
             pnlPercentage,
-            assetSymbol: details.assetSymbol,
+            assetSymbol: vaultDetails.assetSymbol,
           });
         } else {
           setVaultData({
@@ -61,7 +52,7 @@ const SideNav = () => {
             queuedWithdrawal: '0',
             pnl: '0',
             pnlPercentage: '0',
-            assetSymbol: details.assetSymbol,
+            assetSymbol: vaultDetails.assetSymbol,
           });
         }
       } catch (error) {
@@ -70,7 +61,7 @@ const SideNav = () => {
     };
 
     fetchVaultData();
-  }, [selectedVaultId, address, getSelectedVaultDetails]);
+  }, [selectedVaultId, userAddress, vaultDetails]);
 
   return (
     <div className="bg-[#202020] text-muted-foreground flex flex-col text-sm border border-black">

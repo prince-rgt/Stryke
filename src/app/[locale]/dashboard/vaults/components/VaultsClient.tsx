@@ -1,10 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { useAccount } from 'wagmi';
 
-import { VaultDetails } from '@/utils/actions/varrock/getVaultDetails';
 import { formatAddress } from '@/utils/helpers';
 
 import { Typography } from '@/components/ui/typography';
@@ -20,30 +17,8 @@ import { Arbitrum, BTC, ETH } from '../../../../../assets/images';
 import useVaultStore from '../../store/VaultStore';
 
 const VaultsClient: React.FC = () => {
-  const { selectedVaultId, setUserAddress, getSelectedVaultDetails, getSelectedVaultAddress } = useVaultStore();
+  const { selectedVaultId, vaultDetails, vaultAddress } = useVaultStore();
 
-  const [vaultDetails, setVaultDetails] = useState<VaultDetails | null>(null);
-  const [vaultAddress, setVaultAddress] = useState<`0x${string}` | null>(null);
-  const { address } = useAccount();
-
-  useEffect(() => {
-    if (selectedVaultId) {
-      setUserAddress(address as `0x${string}`);
-
-      const vaultAddr = getSelectedVaultAddress();
-      setVaultAddress(vaultAddr);
-
-      const fetchVaultDetails = async () => {
-        try {
-          const details = await getSelectedVaultDetails();
-          setVaultDetails(details);
-        } catch (err) {
-          console.error('Error fetching vault details:', err);
-        }
-      };
-      fetchVaultDetails();
-    }
-  }, [selectedVaultId, address, getSelectedVaultDetails, getSelectedVaultAddress, setUserAddress]);
   const getVaultIcon = () => {
     if (!selectedVaultId) return BTC;
 
