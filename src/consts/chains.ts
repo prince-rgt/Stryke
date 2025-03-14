@@ -7,6 +7,7 @@ import {
   mantle as _mantle,
   sonic as _sonic,
   arbitrum,
+  arbitrumSepolia,
   base,
   blast,
 } from 'wagmi/chains';
@@ -51,7 +52,7 @@ const APP_TO_SUPPORTED_CHAINS = {
   // note: order is imp here! the first one will be used as the default chain
   [BUILD_APP_NAMES.KODIAK]: [berachainTestnetbArtio] as const,
   [BUILD_APP_NAMES.PANCAKESWAP]: [arbitrum] as const,
-  [BUILD_APP_NAMES.STRYKE]: [arbitrum, sonic, base, blast, mantle] as const,
+  [BUILD_APP_NAMES.STRYKE]: [arbitrum, sonic, base, blast, mantle, arbitrumSepolia] as const,
   [BUILD_APP_NAMES.BERACHAIN_TESTNET]: [berachainTestnetbArtio] as const,
 };
 
@@ -78,6 +79,21 @@ export const CHAINS: {
     rpc: `https://lb.drpc.org/ogrpc?network=arbitrum&dkey=${DRPC_API_KEY}`,
     publicRpc: 'https://arbitrum-mainnet.infura.io/v3',
     explorer: 'https://arbiscan.io/',
+    nativeToken: 'ETH',
+    icon: '/images/networks/arbitrum.svg',
+    tokenDecimals: {
+      USDT: 6,
+      USDC: 6,
+      WETH: 18,
+      ARB: 18,
+    },
+    displayTokens: ['ETH', 'CAKE'],
+  },
+  [arbitrumSepolia.id]: {
+    name: 'arbitrumSepolia',
+    rpc: `https://arbitrum-sepolia-rpc.publicnode.com`,
+    publicRpc: 'https://arbitrum-sepolia.drpc.org',
+    explorer: 'https://sepolia.arbiscan.io/',
     nativeToken: 'ETH',
     icon: '/images/networks/arbitrum.svg',
     tokenDecimals: {

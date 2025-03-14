@@ -1,17 +1,53 @@
 import { HistoricDeposit, HistoricExercise, HistoricPurchase, HistoricWithdraw } from '@/types/varrock';
 
-import {
-  DepositHistoryRequestDto,
-  ExerciseHistoryRequestDto,
-  GetSettlementsDto,
-  PurchaseHistoryRequestDto,
-  SettlementsDto,
-  WithdrawHistoryRequestDto,
-} from '@stryke-xyz/shared-types';
+import { SettlementsDto } from '@stryke-xyz/shared-types';
 import axios from 'axios';
 
 import { VARROCK_BASE_API_URL } from '@/consts/env';
 
+export interface WithdrawHistoryRequestDto {
+  pool: `0x${string}`;
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+}
+
+export interface PurchaseHistoryRequestDto {
+  timestampGte?: number;
+  timestampLte?: number;
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+}
+
+export interface GetSettlementsDto {
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+}
+
+export interface ExerciseHistoryRequestDto {
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+}
+
+export interface DepositHistoryRequestDto {
+  timestampGte?: number;
+  timestampLte?: number;
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  user: `0x${string}`;
+  first: number;
+  skip?: number;
+  pool: `0x${string}`;
+}
 export async function getHistoricPurchases(params: PurchaseHistoryRequestDto): Promise<HistoricPurchase[]> {
   return await axios
     .get<HistoricPurchase[]>(

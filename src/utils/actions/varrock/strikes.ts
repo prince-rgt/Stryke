@@ -2,11 +2,16 @@
 
 import { Strikes } from '@/types/varrock';
 
-import { StrikesChainRequestDto } from '@stryke-xyz/shared-types';
 import axios from 'axios';
 
 import { VARROCK_BASE_API_URL } from '@/consts/env';
 
+export interface StrikesChainRequestDto {
+  callsReach: number;
+  putsReach: number;
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+  optionMarket: `0x${string}`;
+}
 const getStrikesChain = async ({
   chainId,
   optionMarket,

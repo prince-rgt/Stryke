@@ -1,7 +1,7 @@
 import { BUILD_APP_NAMES, SupportedChainIdType, TokenData } from '@/types';
 
 import { Address, checksumAddress, getAddress, Hex, zeroAddress } from 'viem';
-import { arbitrum, base, berachainTestnetbArtio, blast, mantle, sonic } from 'wagmi/chains';
+import { arbitrum, arbitrumSepolia, base, berachainTestnetbArtio, blast, mantle, sonic } from 'wagmi/chains';
 
 import CLPool from '@/abi/CLPool';
 import EqualizerPool from '@/abi/EqualizerPool';
@@ -124,6 +124,9 @@ export const POOL_TO_ABI = {
     [checksumAddress('0x0e4831319a50228b9e450861297ab92dee15b44f')]: UniswapV3Pool,
     [checksumAddress('0xb0f6ca40411360c03d41c5ffc5f179b8403cdcf8')]: UniswapV3Pool,
     [checksumAddress('0xe24f62341d84d11078188d83ca3be118193d6389')]: UniswapV3Pool,
+  },
+  [arbitrumSepolia.id]: {
+    [checksumAddress('0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA')]: UniswapV3Pool,
   },
   [base.id]: {
     // degen/weth, brett/weth, cbbtc/usdc, weth/usdc
@@ -382,6 +385,7 @@ export const INCENTIVIZED_POOLS: {
     | null;
 } = {
   [arbitrum.id]: null,
+  [arbitrumSepolia.id]: null,
   //  {
   //   [checksumAddress('0xc6962004f452be9203591991d15f6b388e09e8d0')]: {
   //     tokens: [
@@ -420,6 +424,7 @@ export const LIMIT_ORDERS_CONTRACT_VERSION = '1';
 
 export const LIMIT_ORDERS_CONTRACT_BY_CHAIN_ID: Record<number, Address> = {
   [arbitrum.id]: '0x91e45D19861049f98bD9520042283Be9C7F960B5',
+  [arbitrumSepolia.id]: '0x91e45D19861049f98bD9520042283Be9C7F960B5',
   [mantle.id]: '0x71a26Cd2034302422ce9F567A36B5b1F8AD665f7',
   [blast.id]: '0x22E5d4e35a275524563B7B3cae1b062Bc6406F0B',
   [base.id]: '0x5b064dFC69527302024BE6D15c0C7aE2e3875166',
@@ -433,6 +438,7 @@ export const OVERRIDDEN_MARKET_DECIMALS = {
 
 export const MULTICALL_LIMIT_BY_CHAIN: Record<number, number> = {
   [arbitrum.id]: 40,
+  [arbitrumSepolia.id]: 40,
   [mantle.id]: 40,
   [base.id]: 40,
   [blast.id]: 40,

@@ -1,11 +1,17 @@
 'use client';
 
-import { UserXSykDataRequestDto, UserXSykDataResponseDto, VestPositionsRequestDto } from '@stryke-xyz/shared-types';
+import { UserXSykDataResponseDto } from '@stryke-xyz/shared-types';
 import axios from 'axios';
 import { Address } from 'viem';
 
 import { VARROCK_BASE_API_URL } from '@/consts/env';
 
+export interface VestPositionsRequestDto {
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+}
+export interface UserXSykDataRequestDto {
+  chainId: 8453 | 5000 | 42161 | 81457 | 80084 | 146 | 421614;
+}
 export const getUserData = async (
   { chainId }: UserXSykDataRequestDto,
   account: Address,

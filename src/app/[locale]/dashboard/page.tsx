@@ -7,7 +7,7 @@ import CardItem from './vaults/components/Cards';
 
 import { OPEN_GRAPH_BASE_DATA } from '@/consts/metadata';
 
-import { BTC, DashboardChart, Dollar, ETH } from '../../../assets/images';
+import { BTC, DashboardChart, ETH } from '../../../assets/images';
 
 export const metadata: Metadata = {
   title: 'Dashboard | Stryke',
