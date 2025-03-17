@@ -1,14 +1,23 @@
+import useVaultStore from '@/app/[locale]/dashboard/store/VaultStore';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAccount } from 'wagmi';
 
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
 
 const ConnectWallet = () => {
   const t = useTranslations('Header');
+  const { address } = useAccount();
+  const { userAddress, setUserAddress } = useVaultStore();
+  useEffect(() => {
+    if (!userAddress) {
+      setUserAddress(address as `0x${string}`);
+    }
+  }, [address]);
 
   return (
     <ConnectButton.Custom>

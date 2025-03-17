@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { getUserDeposits } from '@/utils/actions/varrock/getUserDeposits';
 
@@ -18,60 +18,95 @@ interface PositionData {
 }
 
 const Positions = () => {
+  const { userAddress, vaultAddress, vaultDetails, selectedVaultId } = useVaultStore();
   const [positions, setPositions] = useState<PositionData[]>([]);
-  const { userAddress, vaultAddress, vaultDetails } = useVaultStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchPositions = async () => {
-      try {
-        if (!vaultAddress || !userAddress) {
-          setPositions([]);
+  const fetchPositions = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // Get latest vault address from store to ensure we have the most recent state
+      const currentVaultAddress = useVaultStore.getState().vaultAddress;
+      const currentUserAddress = useVaultStore.getState().userAddress;
 
-          return;
-        }
-
-        const deposits = await getUserDeposits(vaultAddress, userAddress);
-        const formattedPositions: PositionData[] = deposits.map((deposit, index) => {
-          const epochNumber = parseInt(deposit.epoch);
-
-          const isCurrent = vaultDetails?.currentEpoch == BigInt(epochNumber);
-
-          const date = new Date();
-          date.setDate(date.getDate() - index * 7);
-
-          const amount = deposit.totalAssets ? (parseFloat(deposit.totalAssets) / 1e18).toFixed(2) : '0.00';
-
-          const isProfitable = index % 2 === 0;
-          const pnl = isProfitable ? 3.41 : -2.15;
-          const yieldValue = isProfitable ? 3.41 : -2.15;
-
-          return {
-            epoch: epochNumber,
-            date: date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
-            amount,
-            status: isCurrent ? 'active' : 'closed',
-            pnl,
-            yield: yieldValue,
-            current: isCurrent,
-            depositId: deposit.id,
-          };
-        });
-
-        formattedPositions.sort((a, b) => {
-          if (a.current && !b.current) return -1;
-          if (!a.current && b.current) return 1;
-          return b.epoch - a.epoch;
-        });
-
-        setPositions(formattedPositions);
-      } catch (err) {
-        console.error('Error fetching positions:', err);
-      } finally {
+      if (!currentVaultAddress || !currentUserAddress) {
+        setPositions([]);
+        return;
       }
-    };
 
+      const deposits = await getUserDeposits(currentVaultAddress, currentUserAddress);
+      const formattedPositions: PositionData[] = deposits.map((deposit, index) => {
+        const epochNumber = parseInt(deposit.epoch);
+        const isCurrent = vaultDetails?.currentEpoch == BigInt(epochNumber);
+
+        const date = new Date();
+        date.setDate(date.getDate() - index * 7);
+
+        const amount = deposit.totalAssets ? (parseFloat(deposit.totalAssets) / 1e18).toFixed(2) : '0.00';
+
+        const isProfitable = index % 2 === 0;
+        const pnl = isProfitable ? 3.41 : -2.15;
+        const yieldValue = isProfitable ? 3.41 : -2.15;
+
+        return {
+          epoch: epochNumber,
+          date: date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
+          amount,
+          status: isCurrent ? 'active' : 'closed',
+          pnl,
+          yield: yieldValue,
+          current: isCurrent,
+          depositId: deposit.id,
+        };
+      });
+
+      formattedPositions.sort((a, b) => {
+        if (a.current && !b.current) return -1;
+        if (!a.current && b.current) return 1;
+        return b.epoch - a.epoch;
+      });
+
+      setPositions(formattedPositions);
+    } catch (err) {
+      console.error('Error fetching positions:', err);
+      setPositions([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [vaultAddress, userAddress, vaultDetails]);
+
+  // Initial fetch and setup
+  useEffect(() => {
     fetchPositions();
-  }, [userAddress, vaultAddress, vaultDetails]);
+  }, [fetchPositions]);
+
+  // Fetch when vault or user changes
+  useEffect(() => {
+    if (vaultAddress && userAddress) {
+      fetchPositions();
+    }
+  }, [vaultAddress, userAddress, fetchPositions]);
+
+  // Subscribe to vault store updates
+  useEffect(() => {
+    const unsubscribe = useVaultStore.subscribe((state) => {
+      if (state.vaultDetails !== vaultDetails && vaultAddress && userAddress) {
+        fetchPositions();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [vaultAddress, userAddress, fetchPositions, vaultDetails]);
+
+  if (isLoading) {
+    return <div className="pb-12 text-center py-8">Loading positions...</div>;
+  }
+
+  if (!userAddress) {
+    return <div className="pb-12 text-center py-8">Connect your wallet to view positions.</div>;
+  }
 
   if (positions.length === 0) {
     return <div className="pb-12 text-center py-8">No positions found for this vault.</div>;
@@ -105,7 +140,7 @@ const Positions = () => {
               <td>{position.date}</td>
               <td className="flex gap-1">
                 <span>{position.amount}</span>
-                <span className="text-muted-foreground">WBTC</span>
+                <span className="text-muted-foreground">{vaultDetails?.assetSymbol}</span>
               </td>
               <td className="">
                 {position.status === 'active' ? (
@@ -119,7 +154,7 @@ const Positions = () => {
                   content={
                     <div className="flex flex-col gap-2 w-[9.6rem]">
                       <p className="flex justify-between">
-                        <span className="text-muted-foreground">WBTC</span>
+                        <span className="text-muted-foreground">{vaultDetails?.assetSymbol}</span>
                         <span className="font-mono">
                           {((parseFloat(position.amount) * position.pnl) / 100).toFixed(4)}
                         </span>

@@ -68,6 +68,9 @@ const PerformanceChart = ({}: ChartProps) => {
       }
       root = rootElement;
 
+      // Remove amCharts logo
+      root._logo?.dispose();
+
       const myTheme = am5.Theme.new(root);
 
       myTheme.rule('Grid').setAll({
