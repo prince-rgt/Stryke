@@ -1,8 +1,8 @@
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import getEpochData from '@/utils/actions/varrock/getEpochData';
-import getVaultDetails from '@/utils/actions/varrock/getVaultDetails';
 import { formatDate } from '@/utils/helpers';
 
 import useVaultStore from '../../store/VaultStore';
@@ -10,7 +10,8 @@ import { ButtonV1 } from './Buttons';
 import Panel from './Panel';
 
 const Timeline = () => {
-  const { getSelectedVaultAddress, vaultAddress, selectedVaultId, userAddress, vaultDetails } = useVaultStore();
+  const searchParams = useSearchParams();
+  const { vaultDetails, vaultAddress, selectedVaultId, setSelectedVaultId } = useVaultStore();
 
   const [epochs, setEpochs] = useState<{
     previous: { id: bigint; date: Date | null };
@@ -21,16 +22,25 @@ const Timeline = () => {
   const [timeToNextEpoch, setTimeToNextEpoch] = useState<string>('');
 
   useEffect(() => {
+    const vid = searchParams.get('vid');
+    if (vid && vid !== selectedVaultId) {
+      setSelectedVaultId(vid);
+    }
+  }, [searchParams, selectedVaultId, setSelectedVaultId]);
+
+  useEffect(() => {
     const fetchVaultDetails = async () => {
       try {
+        if (!vaultAddress || !vaultDetails) return;
+
         const currentEpochId = vaultDetails.currentEpoch;
         const previousEpochId = currentEpochId > 0n ? currentEpochId - 1n : 0n;
         const nextEpochId = currentEpochId + 1n;
 
-        const currentEpochData = await getEpochData(vaultAddress!, currentEpochId, vaultDetails.decimals);
+        const currentEpochData = await getEpochData(vaultAddress, currentEpochId, vaultDetails.decimals);
         const previousEpochData =
           previousEpochId > 0n
-            ? await getEpochData(vaultAddress!, previousEpochId, vaultDetails.decimals)
+            ? await getEpochData(vaultAddress, previousEpochId, vaultDetails.decimals)
             : { startTime: null };
 
         const nextEpochStartTime =
@@ -54,10 +64,8 @@ const Timeline = () => {
       }
     };
 
-    if (selectedVaultId && userAddress) {
-      fetchVaultDetails();
-    }
-  }, [vaultAddress, selectedVaultId, userAddress, vaultDetails]);
+    fetchVaultDetails();
+  }, [vaultAddress, vaultDetails]);
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -83,6 +91,10 @@ const Timeline = () => {
 
     return () => clearInterval(interval);
   }, [epochs]);
+
+  if (!selectedVaultId || !vaultDetails) {
+    return null;
+  }
 
   return (
     <div className="w-full">

@@ -29,7 +29,7 @@ const CardItem = ({ header, imgSrc, hasdollar, handleClick, children, percentage
     if (handleClick) {
       handleClick();
     } else {
-      router.push('/dashboard/vaults');
+      router.push(`/dashboard/vaults?vid=${header}`);
     }
   };
 

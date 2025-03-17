@@ -1,3 +1,4 @@
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 
@@ -7,7 +8,8 @@ import QuickLinks from './components/QuickLinks';
 import useVaultStore from '../../../store/VaultStore';
 
 const SideNav = () => {
-  const { vaultDetails, selectedVaultId, userAddress } = useVaultStore();
+  const searchParams = useSearchParams();
+  const { vaultDetails, selectedVaultId, userAddress, setSelectedVaultId } = useVaultStore();
 
   const [vaultData, setVaultData] = useState({
     position: '0',
@@ -19,8 +21,24 @@ const SideNav = () => {
   });
 
   useEffect(() => {
+    const vid = searchParams.get('vid');
+    if (vid && vid !== selectedVaultId) {
+      setSelectedVaultId(vid);
+    }
+  }, [searchParams, selectedVaultId, setSelectedVaultId]);
+
+  useEffect(() => {
     const fetchVaultData = async () => {
-      if (!selectedVaultId || !userAddress) {
+      if (!selectedVaultId || !userAddress || !vaultDetails) {
+        setVaultData((prev) => ({
+          ...prev,
+          position: '0',
+          earned: '0',
+          queuedWithdrawal: '0',
+          pnl: '0',
+          pnlPercentage: '0',
+          assetSymbol: vaultDetails?.assetSymbol || 'WBTC',
+        }));
         return;
       }
 
@@ -57,11 +75,24 @@ const SideNav = () => {
         }
       } catch (error) {
         console.error('Error fetching vault data:', error);
+        setVaultData((prev) => ({
+          ...prev,
+          position: '0',
+          earned: '0',
+          queuedWithdrawal: '0',
+          pnl: '0',
+          pnlPercentage: '0',
+          assetSymbol: vaultDetails.assetSymbol,
+        }));
       }
     };
 
     fetchVaultData();
   }, [selectedVaultId, userAddress, vaultDetails]);
+
+  if (!selectedVaultId || !vaultDetails) {
+    return null;
+  }
 
   return (
     <div className="bg-[#202020] text-muted-foreground flex flex-col text-sm border border-black">
