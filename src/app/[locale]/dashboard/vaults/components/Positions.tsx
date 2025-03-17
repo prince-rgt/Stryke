@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
 import { getUserDeposits } from '@/utils/actions/varrock/getUserDeposits';
@@ -19,20 +18,9 @@ interface PositionData {
 }
 
 const Positions = () => {
-  const searchParams = useSearchParams();
-  const { userAddress, vaultAddress, vaultDetails, selectedVaultId, setSelectedVaultId } = useVaultStore();
+  const { userAddress, vaultAddress, vaultDetails, selectedVaultId } = useVaultStore();
   const [positions, setPositions] = useState<PositionData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Handle vault selection from URL
-  useEffect(() => {
-    const vid = searchParams.get('vid');
-    if (vid && vid !== selectedVaultId) {
-      setSelectedVaultId(vid);
-      // Trigger vault update when loading from URL
-      useVaultStore.getState().updateVault();
-    }
-  }, [searchParams, selectedVaultId, setSelectedVaultId]);
 
   const fetchPositions = useCallback(async () => {
     setIsLoading(true);

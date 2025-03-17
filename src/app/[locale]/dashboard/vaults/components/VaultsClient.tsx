@@ -22,7 +22,7 @@ import useVaultStore from '../../store/VaultStore';
 const VaultsClient: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { selectedVaultId, vaultDetails, vaultAddress, setSelectedVaultId } = useVaultStore();
+  const { selectedVaultId, vaultDetails, vaultAddress, userAddress, setSelectedVaultId, updateVault } = useVaultStore();
 
   useEffect(() => {
     const vid = searchParams.get('vid');
@@ -42,8 +42,10 @@ const VaultsClient: React.FC = () => {
     // If vid is valid but different from selected vault, update the state
     if (vid !== selectedVaultId) {
       setSelectedVaultId(vid);
+    } else {
+      updateVault();
     }
-  }, [searchParams, selectedVaultId, router, setSelectedVaultId]);
+  }, [searchParams, selectedVaultId, router, userAddress]);
 
   // Get current vault configuration
   const currentVault = selectedVaultId ? VAULT_CONFIGS[selectedVaultId as keyof typeof VAULT_CONFIGS] : null;

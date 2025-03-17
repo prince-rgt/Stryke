@@ -16,7 +16,7 @@ import { BTC, ETH } from '@/assets/images';
 
 const DepositForm = () => {
   const searchParams = useSearchParams();
-  const { selectedVaultId, userAddress, vaultDetails, vaultAddress, updateVault, setSelectedVaultId } = useVaultStore();
+  const { selectedVaultId, userAddress, vaultDetails, vaultAddress, updateVault } = useVaultStore();
 
   const [amount, setAmount] = useState<string>('0');
   const [tokenSymbol, setTokenSymbol] = useState<string>('');
@@ -27,15 +27,6 @@ const DepositForm = () => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [needsApproval, setNeedsApproval] = useState<boolean>(false);
   const [userBalance, setUserBalance] = useState<string>('0');
-
-  // Handle vault selection from URL and trigger vault update
-  useEffect(() => {
-    const vid = searchParams.get('vid');
-    if (vid && vid !== selectedVaultId) {
-      setSelectedVaultId(vid);
-      updateVault(); // Ensure vault details are updated when vault changes
-    }
-  }, [searchParams, selectedVaultId, setSelectedVaultId, updateVault]);
 
   // Update token symbol and icon based on selected vault
   useEffect(() => {

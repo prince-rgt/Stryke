@@ -55,7 +55,6 @@ export const getYearnPnl = async (
     });
 
     const assetValue = formatUnits(assetResults[0].result as bigint, yearnResults[1].result!);
-    console.log(assetValue, 'assetValue');
 
     const yieldAmount = Number(assetValue) - Number(currentYearnDeposited);
 

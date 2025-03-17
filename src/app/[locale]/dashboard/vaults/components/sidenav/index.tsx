@@ -9,7 +9,7 @@ import useVaultStore from '../../../store/VaultStore';
 
 const SideNav = () => {
   const searchParams = useSearchParams();
-  const { vaultDetails, selectedVaultId, userAddress, setSelectedVaultId } = useVaultStore();
+  const { vaultDetails, selectedVaultId, userAddress } = useVaultStore();
 
   const [vaultData, setVaultData] = useState({
     position: '0',
@@ -19,13 +19,6 @@ const SideNav = () => {
     pnlPercentage: '0',
     assetSymbol: 'WBTC',
   });
-
-  useEffect(() => {
-    const vid = searchParams.get('vid');
-    if (vid && vid !== selectedVaultId) {
-      setSelectedVaultId(vid);
-    }
-  }, [searchParams, selectedVaultId, setSelectedVaultId]);
 
   useEffect(() => {
     const fetchVaultData = async () => {

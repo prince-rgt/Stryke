@@ -11,7 +11,7 @@ import Panel from './Panel';
 
 const Timeline = () => {
   const searchParams = useSearchParams();
-  const { vaultDetails, vaultAddress, selectedVaultId, setSelectedVaultId } = useVaultStore();
+  const { vaultDetails, vaultAddress, selectedVaultId } = useVaultStore();
 
   const [epochs, setEpochs] = useState<{
     previous: { id: bigint; date: Date | null };
@@ -20,13 +20,6 @@ const Timeline = () => {
   } | null>(null);
   const [nextEpochTVL, setNextEpochTVL] = useState<string | null>(null);
   const [timeToNextEpoch, setTimeToNextEpoch] = useState<string>('');
-
-  useEffect(() => {
-    const vid = searchParams.get('vid');
-    if (vid && vid !== selectedVaultId) {
-      setSelectedVaultId(vid);
-    }
-  }, [searchParams, selectedVaultId, setSelectedVaultId]);
 
   useEffect(() => {
     const fetchVaultDetails = async () => {
